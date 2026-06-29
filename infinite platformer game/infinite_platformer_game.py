@@ -1,0 +1,251 @@
+import pygame
+import random
+pygame.init()
+screen = pygame.display.set_mode((1280, 720))
+running = True
+clock = pygame.time.Clock()
+game_running = False
+
+while running:
+    died = False
+    vh = 5
+    vg = 0
+    x = 80
+    y = 100
+    jump = False
+    jumpc = 20
+    jumpcc = 0
+    portal_x = random.randint(-20000, 20000)
+    px = 20
+    py = 630
+    
+    shake_direction = 0
+    shake_force = 5
+    shake = True
+    
+    yv = 0
+
+    score = 2
+
+    touching_ground = False
+
+    player = pygame.image.load("player.png")
+
+    start_button = pygame.image.load("platform.png")
+    start_button_rect = start_button.get_rect()
+    
+    portal = pygame.image.load("portal.png")
+    portal_rect = portal.get_rect()
+
+    class Platform(pygame.sprite.Sprite):
+        def __init__(self, px, py,):
+            super().__init__()
+            self.image = pygame.image.load("platform.png")
+            self.rect = self.image.get_rect()
+            self.rect.topleft = (px, py)
+            self.speed = 0
+            if random.random() < 0.3:
+                self.speed = random.choice([-3, 3])
+            self.start_x = px
+        
+        def update(self):
+            self.rect.x += self.speed
+            
+            if self.rect.x > self.start_x + 50:
+                self.speed = -abs(self.speed)
+            
+            if self.rect.x < self.start_x -50:
+                self.speed = abs(self.speed)
+        
+        def draw(self, screen):
+            screen.blit(self.image, self.rect)
+            
+            
+        
+
+    prect = player.get_rect()
+    prect.topleft = (x, y)
+    yd = prect.bottom
+
+
+    platforms = []
+
+    for a in range(5):
+        platforms.append(Platform(px, py))
+        px += 550
+        py = random.randint(500, 690)
+
+
+    while game_running:
+        died = False
+        
+        prect = player.get_rect()
+        prect.topleft = (x, y)
+        yd = prect.bottom
+        
+        
+        
+        touching_ground = False
+        
+        
+        
+        
+        for platform in platforms:
+            if prect.colliderect(platform.rect):
+                y = (platform.rect.y - prect.height) + 1
+                touching_ground = True
+        
+        for platform in platforms:
+            if (platform.rect.left <= prect.centerx <= platform.rect.right):
+                    if (y + prect.height) == platform.rect.y:
+                        touching_ground = True
+        
+        if touching_ground == True:
+            yv = 0
+        
+        
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+                game_running = False
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    game_running = False
+                    
+                                                    # MOVEMENT
+            
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_a]:
+            if x < 320:
+                for platform in platforms:
+                    platform.rect.x += 7
+                for platform in platforms:
+                    if platform.rect.x < 320:
+                        platform.start_x += 7
+                    else:
+                        platform.start_x += 5
+                portal_x +=7
+            else:
+                x -= 7
+            
+            
+            
+        if keys[pygame.K_d]:
+            if x > (980 - prect.width):
+                for platform in platforms:
+                    platform.rect.x -= 7
+                    
+                for platform in platforms:
+                    if platform.rect.x > 980 -  platform.rect.width:
+                        platform.start_x -= 7
+                    else:
+                        platform.start_x -= 5
+                portal_x -=7
+            else:
+                x += 7
+            
+            
+        if keys[pygame.K_SPACE] and touching_ground:
+            jump = True
+            touching_ground = False
+            
+                                                                                    # PLATFORM RESPAWN
+        for platform in platforms[:]:
+            if platform.rect.right < 0:
+                py = random.randint(500, 680)
+                newx = max(platform.rect.left for platform in platforms) + 550
+                
+                platforms.remove(platform)
+                
+                platforms.append(
+                Platform(newx, py)
+            )   
+                score += 1
+        
+        for platform in platforms[:]:
+            if platform.rect.left > 1280:
+                py = random.randint(500, 710)
+                newx = min(platform.rect.left for platform in platforms) - 550
+                
+                platforms.remove(platform)
+                
+                platforms.append(
+                Platform(newx, py)
+            )   
+                score -= 1
+        
+        
+        
+        if jump == True:
+                if jumpc > 0:
+                        y -= jumpc
+                        jumpc -= 1
+                else:
+                    jumpc = 20
+                    jump = False
+                    
+        
+        
+        if jump == False and touching_ground == False:
+            y += yv
+            yv += 1
+            
+        
+        print(portal_x)
+            
+        if y > 720:
+            died = True
+            game_running = False
+        
+        print(touching_ground)
+        
+                                                # END
+        for platform in platforms:
+            platform.update()
+        
+        screen.fill((0,0,0))
+        
+        if shake == True:
+            shake_x = random.randint(-5, 5)
+            shake_y = random.randint(-5, 5)
+        else:
+            shake_x = 0
+            shake_y = 0
+        
+        for platform in platforms:
+            screen.blit(platform.image, (platform.rect.x + shake_x, platform.rect.y + shake_y))
+        
+        screen.blit(player, (x, y))
+        screen.blit(portal, (portal_x, 500))
+        print(score)
+        clock.tick(60)
+        pygame.display.flip()
+        
+    screen.fill((0,0,0))
+    if died == True:
+        print("died")
+        game_running = True
+    if died == False:
+        game_running = False
+    
+    for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+                game_running = False
+            
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    game_running = True
+                
+    
+    screen.blit(start_button, (490, 320))
+    
+    
+    pygame.display.flip()
+    
+    print(1280 - start_button_rect.width)
+    print(720 - start_button_rect.height)
+    
+pygame.quit()
