@@ -15,11 +15,14 @@ while running:
     jump = False
     jumpc = 20
     jumpcc = 0
-
+    portal_x = random.randint(-20000, 20000)
     px = 20
     py = 630
-
-
+    
+    shake_direction = 0
+    shake_force = 5
+    shake = True
+    
     yv = 0
 
     score = 2
@@ -30,6 +33,9 @@ while running:
 
     start_button = pygame.image.load("platform.png")
     start_button_rect = start_button.get_rect()
+    
+    portal = pygame.image.load("portal.png")
+    portal_rect = portal.get_rect()
 
     class Platform(pygame.sprite.Sprite):
         def __init__(self, px, py,):
@@ -108,7 +114,7 @@ while running:
                 if event.key == pygame.K_ESCAPE:
                     game_running = False
                     
-        
+                                                    # MOVEMENT
             
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a]:
@@ -120,6 +126,7 @@ while running:
                         platform.start_x += 7
                     else:
                         platform.start_x += 5
+                portal_x +=7
             else:
                 x -= 7
             
@@ -135,14 +142,16 @@ while running:
                         platform.start_x -= 7
                     else:
                         platform.start_x -= 5
+                portal_x -=7
             else:
                 x += 7
+            
             
         if keys[pygame.K_SPACE] and touching_ground:
             jump = True
             touching_ground = False
             
-                
+                                                                                    # PLATFORM RESPAWN
         for platform in platforms[:]:
             if platform.rect.right < 0:
                 py = random.randint(500, 680)
@@ -184,24 +193,32 @@ while running:
             yv += 1
             
         
-        
-        
+        print(portal_x)
+            
         if y > 720:
             died = True
             game_running = False
         
         print(touching_ground)
         
-        
+                                                # END
         for platform in platforms:
             platform.update()
         
         screen.fill((0,0,0))
         
+        if shake == True:
+            shake_x = random.randint(-5, 5)
+            shake_y = random.randint(-5, 5)
+        else:
+            shake_x = 0
+            shake_y = 0
+        
         for platform in platforms:
-            screen.blit(platform.image, platform.rect)
+            screen.blit(platform.image, (platform.rect.x + shake_x, platform.rect.y + shake_y))
         
         screen.blit(player, (x, y))
+        screen.blit(portal, (portal_x, 500))
         print(score)
         clock.tick(60)
         pygame.display.flip()
