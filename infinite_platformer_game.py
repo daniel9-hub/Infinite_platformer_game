@@ -20,7 +20,7 @@ while running:
     py = 630
     
     shake_direction = 0
-    shake_force = 5
+    shake_force = 0
     shake = True
     
     yv = 0
@@ -193,7 +193,26 @@ while running:
             yv += 1
             
         
-        print(portal_x)
+        if 5000 < abs(portal_x) < 20000:
+            shake = False
+        elif 3000 < abs(portal_x) < 5000:
+            shake_force = 1
+            shake = True
+        elif 1000 < abs(portal_x) < 3000:
+            shake_force = 3
+            shake = True
+        elif 500 < abs(x - portal_x) < 1000:
+            shake_force = 6
+            shake = True
+        elif 300 < abs(x - portal_x) < 500:
+            shake_force = 12
+            shake = True
+        elif abs(x - portal_x) < 300:
+            shake_force = 20
+            shake = True
+        
+        
+        print(abs(x - portal_x))
             
         if y > 720:
             died = True
@@ -208,11 +227,14 @@ while running:
         screen.fill((0,0,0))
         
         if shake == True:
-            shake_x = random.randint(-5, 5)
-            shake_y = random.randint(-5, 5)
+            shake_x = random.randint(-shake_force, shake_force)
+            shake_y = random.randint(-shake_force, shake_force)
         else:
             shake_x = 0
             shake_y = 0
+        
+        x += (shake_x / 2)
+        y += (shake_x / 2)
         
         for platform in platforms:
             screen.blit(platform.image, (platform.rect.x + shake_x, platform.rect.y + shake_y))
