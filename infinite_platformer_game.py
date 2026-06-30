@@ -21,6 +21,11 @@ while running:
     jumpc = 20
     jumpcc = 0
     
+    lightning_x = 0
+    lightning_y = 0
+    lightning_strike = False
+    lightning_time = 0
+    
     px = 20
     py = 630
     
@@ -41,7 +46,10 @@ while running:
     
     portal = pygame.image.load("portal.png")
     portal_rect = portal.get_rect()
-
+    
+    lightning = pygame.image.load("lightning.png")
+    lightning_rect = lightning.get_rect()
+    
     class Platform(pygame.sprite.Sprite):
         def __init__(self, px, py,):
             super().__init__()
@@ -80,7 +88,7 @@ while running:
         px += 550
         py = random.randint(500, 690)
 
-
+                                                                # GAME RUNNING
     while game_running:
         died = False
         
@@ -131,6 +139,7 @@ while running:
                         platform.start_x += 7
                     else:
                         platform.start_x += 5
+                lightning_x += 5
                 portal_x +=7
             else:
                 x -= 7
@@ -147,6 +156,7 @@ while running:
                         platform.start_x -= 7
                     else:
                         platform.start_x -= 5
+                lightning_x -+ 7
                 portal_x -=7
             else:
                 x += 7
@@ -183,6 +193,9 @@ while running:
         
         
         
+        
+                                                                        # JUMP
+        
         if jump == True:
                 if jumpc > 0:
                         y -= jumpc
@@ -197,7 +210,7 @@ while running:
             y += yv
             yv += 1
             
-        
+                                                        # SHAKE
         if 5000 < abs(portal_x) < 25000:
             shake = False
         elif 3000 < abs(portal_x) < 5000:
@@ -217,15 +230,37 @@ while running:
             shake = True
         
         
-        print(abs(x - portal_x))
+        
             
         if y > 720:
             died = True
             game_running = False
         
-        print(touching_ground)
         
-                                                # END
+                                                            # LIGHTNING
+        if lightning_strike == False:
+            lightning_chance = random.randint(1, 100)
+            if lightning_chance == 1:
+                lightning_strike = True
+                highest_platform = 720
+                highest_platform_x = 0
+                for platform in platforms:
+                    if platform.rect.y < highest_platform:
+                        highest_platform = platform.rect.y
+                        highest_platform_x = platform.rect.x
+                lightning_x = (highest_platform_x + random.randint(0, 200))
+                lightning_y = (highest_platform - 800)
+                lightning_rect.x = lightning_x
+                lightning_rect.y = lightning_y
+                if prect.colliderect(lightning_rect):
+                    died = True
+                    game_running = False
+                    print("collision")
+                
+        
+        
+        
+                                                        # END
         for platform in platforms:
             platform.update()
         
@@ -239,14 +274,23 @@ while running:
             shake_y = 0
         
         x += (shake_x / 2)
-        y += (shake_x / 2)
+        y += (shake_y / 2)
         
         for platform in platforms:
             screen.blit(platform.image, (platform.rect.x + shake_x, platform.rect.y + shake_y))
         
+        if lightning_strike == True:
+            screen.blit(lightning, (lightning_x, lightning_y))
+            lightning_time += 1
+            if lightning_time == 20:
+                lightning_time = 0
+                lightning_strike = False          
+        
+        
         screen.blit(player, (x, y))
         screen.blit(portal, (portal_x, portal_y))
-        print(score)
+        
+        
         clock.tick(60)
         pygame.display.flip()
     
