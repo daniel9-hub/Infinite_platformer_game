@@ -6,6 +6,11 @@ running = True
 clock = pygame.time.Clock()
 game_running = False
 
+portal_x = random.randint(-25000, 25000)
+portal_y = random.randint(200, 500)
+original_portal_x = portal_x
+original_portal_y = portal_y
+
 while running:
     died = False
     vh = 5
@@ -15,7 +20,7 @@ while running:
     jump = False
     jumpc = 20
     jumpcc = 0
-    portal_x = random.randint(-20000, 20000)
+    
     px = 20
     py = 630
     
@@ -193,21 +198,21 @@ while running:
             yv += 1
             
         
-        if 5000 < abs(portal_x) < 20000:
+        if 5000 < abs(portal_x) < 25000:
             shake = False
         elif 3000 < abs(portal_x) < 5000:
             shake_force = 1
             shake = True
-        elif 1000 < abs(portal_x) < 3000:
+        elif 1500 < abs(portal_x) < 3000:
             shake_force = 3
             shake = True
-        elif 500 < abs(x - portal_x) < 1000:
+        elif 1000 < abs(x - portal_x) < 1500:
             shake_force = 6
             shake = True
-        elif 300 < abs(x - portal_x) < 500:
+        elif 600 < abs(x - portal_rect.centerx) < 1000:
             shake_force = 12
             shake = True
-        elif abs(x - portal_x) < 300:
+        elif abs(x - portal_rect.centerx) < 600:
             shake_force = 20
             shake = True
         
@@ -240,11 +245,14 @@ while running:
             screen.blit(platform.image, (platform.rect.x + shake_x, platform.rect.y + shake_y))
         
         screen.blit(player, (x, y))
-        screen.blit(portal, (portal_x, 500))
+        screen.blit(portal, (portal_x, portal_y))
         print(score)
         clock.tick(60)
         pygame.display.flip()
-        
+    
+    portal_x = original_portal_x
+    portal_y = original_portal_y
+    
     screen.fill((0,0,0))
     if died == True:
         print("died")
@@ -254,6 +262,7 @@ while running:
     
     for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                
                 running = False
                 game_running = False
             
