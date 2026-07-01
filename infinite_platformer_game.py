@@ -25,6 +25,7 @@ while running:
     lightning_y = 0
     lightning_strike = False
     lightning_time = 0
+    lightning_blit = True
     
     px = 20
     py = 630
@@ -139,7 +140,8 @@ while running:
                         platform.start_x += 7
                     else:
                         platform.start_x += 5
-                lightning_x += 5
+                lightning_x += 7
+                lightning_rect.x += 7
                 portal_x +=7
             else:
                 x -= 7
@@ -156,7 +158,8 @@ while running:
                         platform.start_x -= 7
                     else:
                         platform.start_x -= 5
-                lightning_x -+ 7
+                lightning_x -= 7
+                lightning_rect.x -= 7
                 portal_x -=7
             else:
                 x += 7
@@ -239,23 +242,19 @@ while running:
         
                                                             # LIGHTNING
         if lightning_strike == False:
-            lightning_chance = random.randint(1, 100)
+            lightning_chance = random.randint(1, 20)
             if lightning_chance == 1:
                 lightning_strike = True
-                highest_platform = 720
-                highest_platform_x = 0
+                
+                lightning_x = random.randint(0, 1280)
                 for platform in platforms:
-                    if platform.rect.y < highest_platform:
-                        highest_platform = platform.rect.y
-                        highest_platform_x = platform.rect.x
-                lightning_x = (highest_platform_x + random.randint(0, 200))
-                lightning_y = (highest_platform - 800)
+                    if platform.rect.x < lightning_x < (platform.rect.x - platform.rect.width):
+                        lightning_y = (platform.rect.y - 800)
+                    else:
+                        lightning_y = 0
                 lightning_rect.x = lightning_x
                 lightning_rect.y = lightning_y
-                if prect.colliderect(lightning_rect):
-                    died = True
-                    game_running = False
-                    print("collision")
+                
                 
         
         
@@ -280,12 +279,28 @@ while running:
             screen.blit(platform.image, (platform.rect.x + shake_x, platform.rect.y + shake_y))
         
         if lightning_strike == True:
-            screen.blit(lightning, (lightning_x, lightning_y))
-            lightning_time += 1
-            if lightning_time == 20:
+            if lightning_blit == True:              # START
+                screen.blit(lightning, (lightning_x, lightning_y))
+                lightning_time += 1
+            if 45 > lightning_time >= 30:           # OFF
+                lightning_time += 1
+                lightning_blit = False
+                screen.blit(lightning, (-100, 800))
+            if 55 > lightning_time >= 45:           # STRIKE
+                screen.blit(lightning, (lightning_x, lightning_y))
+                lightning_time += 1
+                if prect.colliderect(lightning_rect):
+                    died = True
+                    game_running = False
+                    print("collision")
+            if lightning_time == 55:
+                screen.blit(lightning, (-100, 800))
+                lightning_strike = False
                 lightning_time = 0
-                lightning_strike = False          
-        
+                lightning_blit = True
+                
+        print(lightning_time)
+        print(lightning_strike)
         
         screen.blit(player, (x, y))
         screen.blit(portal, (portal_x, portal_y))
