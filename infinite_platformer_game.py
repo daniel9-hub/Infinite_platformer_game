@@ -31,7 +31,8 @@ while running:
     py = 630
     
     shake_direction = 0
-    shake_force = 0
+    shake_force_x = 0
+    shake_force_y = 0
     shake = True
     
     yv = 0
@@ -217,19 +218,24 @@ while running:
         if 5000 < abs(portal_x) < 25000:
             shake = False
         elif 3000 < abs(portal_x) < 5000:
-            shake_force = 1
+            shake_force_x = 1
+            shake_force_y = 1
             shake = True
         elif 1500 < abs(portal_x) < 3000:
-            shake_force = 3
+            shake_force_x = 3
+            shake_force_y = 3
             shake = True
         elif 1000 < abs(x - portal_x) < 1500:
-            shake_force = 6
+            shake_force_x = 6
+            shake_force_y = 6
             shake = True
         elif 600 < abs(x - portal_rect.centerx) < 1000:
-            shake_force = 12
+            shake_force_x = 12
+            shake_force_y = 12
             shake = True
         elif abs(x - portal_rect.centerx) < 600:
-            shake_force = 20
+            shake_force_x = 20
+            shake_force_y = 20
             shake = True
         
         
@@ -265,19 +271,8 @@ while running:
         
         screen.fill((0,0,0))
         
-        if shake == True:
-            shake_x = random.randint(-shake_force, shake_force)
-            shake_y = random.randint(-shake_force, shake_force)
-        else:
-            shake_x = 0
-            shake_y = 0
         
-        x += (shake_x / 2)
-        y += (shake_y / 2)
-        
-        for platform in platforms:
-            screen.blit(platform.image, (platform.rect.x + shake_x, platform.rect.y + shake_y))
-        
+                                                                                                    # LIGHTNING 2
         if lightning_strike == True:
             if lightning_blit == True:              # START
                 screen.blit(lightning, (lightning_x, lightning_y))
@@ -289,16 +284,33 @@ while running:
             if 55 > lightning_time >= 45:           # STRIKE
                 screen.blit(lightning, (lightning_x, lightning_y))
                 lightning_time += 1
+                shake_force_y = 30
+                shake = True
                 if prect.colliderect(lightning_rect):
                     died = True
                     game_running = False
                     print("collision")
+                    
             if lightning_time == 55:
                 screen.blit(lightning, (-100, 800))
                 lightning_strike = False
                 lightning_time = 0
                 lightning_blit = True
-                
+        
+        if shake == True:
+            shake_x = random.randint(-shake_force_x, shake_force_x)
+            shake_y = random.randint(-shake_force_y, shake_force_y)
+        else:
+            shake_x = 0
+            shake_y = 0
+        
+        x += (shake_x / 2)
+        y += (shake_y / 2)
+        
+        for platform in platforms:
+            screen.blit(platform.image, (platform.rect.x + shake_x, platform.rect.y + shake_y))
+        
+        
         print(lightning_time)
         print(lightning_strike)
         
