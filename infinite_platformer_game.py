@@ -5,9 +5,11 @@ screen = pygame.display.set_mode((1280, 720))
 running = True
 clock = pygame.time.Clock()
 game_running = False
-
+world = random.randint(1,2)
+original_world = world
+print(world)
 portal_x = random.randint(-25000, 25000)
-portal_y = random.randint(200, 500)
+portal_y = random.randint(200, 300)
 original_portal_x = portal_x
 original_portal_y = portal_y
 
@@ -48,9 +50,12 @@ while running:
     
     portal = pygame.image.load("portal.png")
     portal_rect = portal.get_rect()
+    teleport = False
     
     lightning = pygame.image.load("lightning.png")
     lightning_rect = lightning.get_rect()
+    
+    enemy = pygame.image.load("player.png")
     
     class Platform(pygame.sprite.Sprite):
         def __init__(self, px, py,):
@@ -97,7 +102,8 @@ while running:
         prect = player.get_rect()
         prect.topleft = (x, y)
         yd = prect.bottom
-        
+        portal_rect.x = portal_x
+        portal_rect.y = portal_y
         
         
         touching_ground = False
@@ -247,23 +253,30 @@ while running:
         
         
                                                             # LIGHTNING
-        if lightning_strike == False:
-            lightning_chance = random.randint(1, 20)
-            if lightning_chance == 1:
-                lightning_strike = True
+        if world == 1:
+            if lightning_strike == False:
+                lightning_chance = random.randint(1, 20)
+                if lightning_chance == 1:
+                    lightning_strike = True
+                    
+                    lightning_x = random.randint(0, 1280)
+                    for platform in platforms:
+                        if platform.rect.x < lightning_x < (platform.rect.x + platform.rect.width):
+                            lightning_y = (platform.rect.y - 800)
+                            break
+                        else:
+                            lightning_y = 0
+                    lightning_rect.x = lightning_x
+                    lightning_rect.y = lightning_y
                 
-                lightning_x = random.randint(0, 1280)
-                for platform in platforms:
-                    if platform.rect.x < lightning_x < (platform.rect.x - platform.rect.width):
-                        lightning_y = (platform.rect.y - 800)
-                    else:
-                        lightning_y = 0
-                lightning_rect.x = lightning_x
-                lightning_rect.y = lightning_y
-                
-                
+                                                        # TELEPORT
+        if prect.colliderect(portal_rect):
+            teleport = True
         
-        
+        if teleport == True:
+            world = random.randint(1,2)
+            game_running = False
+            print("teleported")
         
                                                         # END
         for platform in platforms:
@@ -273,34 +286,35 @@ while running:
         
         
                                                                                                     # LIGHTNING 2
-        if lightning_strike == True:
-            if lightning_blit == True:              # START
-                screen.blit(lightning, (lightning_x, lightning_y))
-                lightning_time += 1
-            if 45 > lightning_time >= 30:           # OFF
-                lightning_time += 1
-                lightning_blit = False
-                screen.blit(lightning, (-100, 800))
-            if 55 > lightning_time >= 45:           # STRIKE
-                screen.blit(lightning, (lightning_x, lightning_y))
-                lightning_time += 1
-                shake_force_y = 30
-                shake = True
-                if prect.colliderect(lightning_rect):
-                    died = True
-                    game_running = False
-                    print("collision")
-                    
-            if lightning_time == 55:
-                screen.blit(lightning, (-100, 800))
-                lightning_strike = False
-                lightning_time = 0
-                lightning_blit = True
+        if world == 1:
+            if lightning_strike == True:
+                if lightning_blit == True:              # START
+                    screen.blit(lightning, (lightning_x, lightning_y))
+                    lightning_time += 1
+                if 45 > lightning_time >= 30:           # OFF
+                    lightning_time += 1
+                    lightning_blit = False
+                    screen.blit(lightning, (-100, 800))
+                if 55 > lightning_time >= 45:           # STRIKE
+                    screen.blit(lightning, (lightning_x, lightning_y))
+                    lightning_time += 1
+                    shake_force_y = 30
+                    shake = True
+                    if prect.colliderect(lightning_rect):
+                        died = True
+                        game_running = False
+                        print("collision")
+                        
+                if lightning_time == 55:
+                    screen.blit(lightning, (-100, 800))
+                    lightning_strike = False
+                    lightning_time = 0
+                    lightning_blit = True
         
         if shake == True:
             shake_x = random.randint(-shake_force_x, shake_force_x)
             shake_y = random.randint(-shake_force_y, shake_force_y)
-        else:
+        else: 
             shake_x = 0
             shake_y = 0
         
@@ -317,7 +331,7 @@ while running:
         screen.blit(player, (x, y))
         screen.blit(portal, (portal_x, portal_y))
         
-        
+        print(portal_x)
         clock.tick(60)
         pygame.display.flip()
     
@@ -325,7 +339,7 @@ while running:
     portal_y = original_portal_y
     
     screen.fill((0,0,0))
-    if died == True:
+    if died == True or teleport == True:
         print("died")
         game_running = True
     if died == False:
@@ -347,7 +361,7 @@ while running:
     
     pygame.display.flip()
     
-    print(1280 - start_button_rect.width)
-    print(720 - start_button_rect.height)
+    #print(1280 - start_button_rect.width)
+    #print(720 - start_button_rect.height)
     
 pygame.quit()
