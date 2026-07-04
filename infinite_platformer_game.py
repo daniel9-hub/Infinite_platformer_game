@@ -5,14 +5,20 @@ screen = pygame.display.set_mode((1280, 720))
 running = True
 clock = pygame.time.Clock()
 game_running = False
-world = random.randint(1,2)
-original_world = world
-print(world)
+
+
 portal_x = random.randint(-25000, 25000)
 portal_y = random.randint(200, 300)
 original_portal_x = portal_x
 original_portal_y = portal_y
 
+worlds = []
+
+for i in range(5):
+    world = random.randint(1,3)
+    worlds.append(world)
+print(worlds)
+worlds_index = 0
 while running:
     died = False
     vh = 5
@@ -22,7 +28,6 @@ while running:
     jump = False
     jumpc = 20
     jumpcc = 0
-    
     lightning_x = 0
     lightning_y = 0
     lightning_strike = False
@@ -56,6 +61,9 @@ while running:
     lightning_rect = lightning.get_rect()
     
     enemy = pygame.image.load("player.png")
+    enemy_rect = enemy.get_rect()
+    ex = 900
+    ey = 300
     
     class Platform(pygame.sprite.Sprite):
         def __init__(self, px, py,):
@@ -244,16 +252,20 @@ while running:
             shake_force_y = 20
             shake = True
         
-        
-        
-            
+                                    # ENEMY
+        if worlds[worlds_index] == 2:
+            if ex > x:
+                ex -= 7
+        if worlds[worlds_index] == 2:
+            if ey < y:
+                ey += 7
         if y > 720:
             died = True
             game_running = False
         
         
                                                             # LIGHTNING
-        if world == 1:
+        if worlds[worlds_index] == 1:
             if lightning_strike == False:
                 lightning_chance = random.randint(1, 20)
                 if lightning_chance == 1:
@@ -276,7 +288,7 @@ while running:
         if teleport == True:
             world = random.randint(1,2)
             game_running = False
-            print("teleported")
+            #print("teleported")
         
                                                         # END
         for platform in platforms:
@@ -303,7 +315,7 @@ while running:
                     if prect.colliderect(lightning_rect):
                         died = True
                         game_running = False
-                        print("collision")
+                        #print("collision")
                         
                 if lightning_time == 55:
                     screen.blit(lightning, (-100, 800))
@@ -325,13 +337,14 @@ while running:
             screen.blit(platform.image, (platform.rect.x + shake_x, platform.rect.y + shake_y))
         
         
-        print(lightning_time)
-        print(lightning_strike)
+        #print(lightning_time)
+        #print(lightning_strike)
         
         screen.blit(player, (x, y))
         screen.blit(portal, (portal_x, portal_y))
         
-        print(portal_x)
+        screen.blit(enemy, (ex, ey))
+        #print(portal_x)
         clock.tick(60)
         pygame.display.flip()
     
@@ -339,12 +352,18 @@ while running:
     portal_y = original_portal_y
     
     screen.fill((0,0,0))
-    if died == True or teleport == True:
-        print("died")
+    if died == True:
+        #print("died")
         game_running = True
+        worlds_index = 0
     if died == False:
         game_running = False
-    
+    if teleport == True:
+        game_running = True
+        portal_x = random.randint(-25000, 25000)
+        portal_y = random.randint(200, 300)
+        worlds_index += 1
+        teleport = False
     for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 
