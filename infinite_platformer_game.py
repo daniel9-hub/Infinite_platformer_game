@@ -15,7 +15,7 @@ original_portal_y = portal_y
 worlds = []
 
 for i in range(5):
-    world = random.randint(1,3)
+    world = random.randint(2,2)
     worlds.append(world)
 print(worlds)
 worlds_index = 0
@@ -158,6 +158,7 @@ while running:
                 lightning_x += 7
                 lightning_rect.x += 7
                 portal_x +=7
+                ex += 7
             else:
                 x -= 7
             
@@ -176,6 +177,7 @@ while running:
                 lightning_x -= 7
                 lightning_rect.x -= 7
                 portal_x -=7
+                ex -= 7
             else:
                 x += 7
             
@@ -254,15 +256,20 @@ while running:
         
                                     # ENEMY
         if worlds[worlds_index] == 2:
-            if ex > x:
-                ex -= 7
+            if ex >= x:
+                ex -= 5
+            elif ex <= x:
+                ex += 5
         if worlds[worlds_index] == 2:
-            if ey < y:
-                ey += 7
+            if ey <= y:
+                ey += 5
+            elif ey >= y:
+                ey -= 5
         if y > 720:
             died = True
             game_running = False
-        
+        print(ey)
+        print(y)
         
                                                             # LIGHTNING
         if worlds[worlds_index] == 1:
@@ -342,8 +349,8 @@ while running:
         
         screen.blit(player, (x, y))
         screen.blit(portal, (portal_x, portal_y))
-        
-        screen.blit(enemy, (ex, ey))
+        if worlds[worlds_index] == 2:
+            screen.blit(enemy, (ex, ey))
         #print(portal_x)
         clock.tick(60)
         pygame.display.flip()
