@@ -64,6 +64,10 @@ while running:
     enemy_rect = enemy.get_rect()
     ex = 900
     ey = 300
+    enemy_rect.x = -300
+    enemy_rect.y = -500
+    enemy_jump = False
+    eyv = 0
     
     class Platform(pygame.sprite.Sprite):
         def __init__(self, px, py,):
@@ -94,6 +98,8 @@ while running:
     prect = player.get_rect()
     prect.topleft = (x, y)
     yd = prect.bottom
+    x = (640 - (prect.x / 2))
+    y = 100
 
 
     platforms = []
@@ -260,17 +266,31 @@ while running:
                 ex -= 5
             elif ex <= x:
                 ex += 5
-        if worlds[worlds_index] == 2:
-            if ey <= y:
-                ey += 5
-            elif ey >= y:
-                ey -= 5
+        
+        if enemy_jump == False:
+            ey += eyv
+            eyv += 1
+            
+        for platform in platforms:
+            if enemy_rect.colliderect(platform.rect):
+                ey -= 1
+                eyv = 0
+                
+        
         if y > 720:
             died = True
             game_running = False
-        print(ey)
-        print(y)
+        #print(ey)
+        #print(y)
         
+        if worlds[worlds_index] == 2:
+            enemy_rect.x = ex
+            enemy_rect.y = ey
+        
+        if prect.colliderect(enemy_rect):
+            died = True
+            game_running = False
+            print("died")
                                                             # LIGHTNING
         if worlds[worlds_index] == 1:
             if lightning_strike == False:
@@ -305,7 +325,7 @@ while running:
         
         
                                                                                                     # LIGHTNING 2
-        if world == 1:
+        if worlds[worlds_index] == 1:
             if lightning_strike == True:
                 if lightning_blit == True:              # START
                     screen.blit(lightning, (lightning_x, lightning_y))
