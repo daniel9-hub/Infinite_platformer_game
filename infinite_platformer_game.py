@@ -68,7 +68,9 @@ while running:
     enemy_rect.y = -500
     enemy_jump = False
     eyv = 0
-    
+    enemy_touching_ground = False
+    enemy_jumpc = 20
+    enemy_jumped = False
     class Platform(pygame.sprite.Sprite):
         def __init__(self, px, py,):
             super().__init__()
@@ -124,7 +126,7 @@ while running:
         
         
         
-        
+                                                        # PLAYER PLATFORM COLLISION
         for platform in platforms:
             if prect.colliderect(platform.rect):
                 y = (platform.rect.y - prect.height) + 1
@@ -262,30 +264,48 @@ while running:
         
                                     # ENEMY
         if worlds[worlds_index] == 2:
+            enemy_rect.x = ex
+            enemy_rect.y = ey
+        
+        if worlds[worlds_index] == 2:
             if ex >= x:
                 ex -= 5
             elif ex <= x:
                 ex += 5
         
-        if enemy_jump == False:
+        if enemy_jumpc == 20:
             ey += eyv
             eyv += 1
             
+        enemy_touching_ground = False
+        
         for platform in platforms:
             if enemy_rect.colliderect(platform.rect):
-                ey -= 1
+                ey = (platform.rect.y - enemy_rect.height + 1)
                 eyv = 0
-                
-        
+                enemy_touching_ground = True
+                enemy_jumpc = 20
+                enemy_jumped = False
+            
+        if enemy_touching_ground == False and enemy_jumped == False:
+            enemy_jump = True
+            if enemy_jumpc > 0:
+                ey -= enemy_jumpc
+                enemy_jumpc -=1
+            if enemy_jumpc == 0:
+                enemy_jumpc = 20
+                enemy_jump = False
+                enemy_jumped = True
+            
         if y > 720:
+            
             died = True
             game_running = False
         #print(ey)
         #print(y)
+        print(enemy_jumpc)
+        print(enemy_touching_ground)
         
-        if worlds[worlds_index] == 2:
-            enemy_rect.x = ex
-            enemy_rect.y = ey
         
         if prect.colliderect(enemy_rect):
             died = True
