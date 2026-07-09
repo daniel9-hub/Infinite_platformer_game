@@ -71,6 +71,7 @@ while running:
     enemy_touching_ground = False
     enemy_jumpc = 20
     enemy_jumped = False
+    enemy_direction = -5
     class Platform(pygame.sprite.Sprite):
         def __init__(self, px, py,):
             super().__init__()
@@ -266,19 +267,21 @@ while running:
         if worlds[worlds_index] == 2:
             enemy_rect.x = ex
             enemy_rect.y = ey
-        
+            
+        if touching_ground == True:
+            if worlds[worlds_index] == 2:
+                if ex >= x:
+                    enemy_direction -= 5
+                elif ex <= x:
+                    enemy_direction += 5
         if worlds[worlds_index] == 2:
-            if ex >= x:
-                ex -= 5
-            elif ex <= x:
-                ex += 5
-        
+            ex += enemy_direction
         if enemy_jumpc == 20:
             ey += eyv
             eyv += 1
             
         enemy_touching_ground = False
-        
+        print((ex + (enemy_rect.width / 2)) - (x + (prect.width / 2)))
         for platform in platforms:
             if enemy_rect.colliderect(platform.rect):
                 ey = (platform.rect.y - enemy_rect.height + 1)
@@ -373,7 +376,7 @@ while running:
         if shake == True:
             shake_x = random.randint(-shake_force_x, shake_force_x)
             shake_y = random.randint(-shake_force_y, shake_force_y)
-        else: 
+        else:
             shake_x = 0
             shake_y = 0
         
