@@ -15,7 +15,7 @@ original_portal_y = portal_y
 worlds = []
 
 for i in range(5):
-    world = random.randint(2,2)
+    world = random.randint(3,3)
     worlds.append(world)
 print(worlds)
 worlds_index = 0
@@ -59,7 +59,7 @@ while running:
     
     lightning = pygame.image.load("lightning.png")
     lightning_rect = lightning.get_rect()
-    
+                                                # ENEMY SETUP
     enemy = pygame.image.load("player.png")
     enemy_rect = enemy.get_rect()
     ex = 900
@@ -72,6 +72,14 @@ while running:
     enemy_jumpc = 24
     enemy_jumped = False
     enemy_direction = -5
+    
+    rush = pygame.image.load("portal.png")
+    rx = 1280
+    ry = 500
+    rush_chance = 0
+    rush_going = False
+    rush_direction = -20
+    rush_rect = rush.get_rect()
     
     class Platform(pygame.sprite.Sprite):
         def __init__(self, px, py,):
@@ -301,15 +309,40 @@ while running:
                 enemy_jumpc = 24
                 enemy_jump = False
                 enemy_jumped = True
+        
+        if ey > 720:
+            ex = (1280 - enemy_rect.width)
+            ey = 0
             
+            
+                                        # RUSH
+        if worlds[worlds_index] == 3:
+            if rush_going == False:
+                rush_chance = random.randint(1,10)
+                if rush_chance == 1:
+                    rush_going = True
+            if rush_going == True:
+                if rx >= 1280:
+                    rush_direction = -20
+                elif rx <= 0 - (rush_rect.width):
+                    rush_direction = 20
+                rx += rush_direction
+                
+            rush_rect.x = rx
+            rush_rect.y = ry
+            
+            if prect.colliderect(rush_rect):
+                died = True
+                game_running = False
+                
         if y > 720:
             
             died = True
             game_running = False
         #print(ey)
         #print(y)
-        print(enemy_jumpc)
-        print(enemy_touching_ground)
+        #print(enemy_jumpc)
+        #print(enemy_touching_ground)
         
         
         if prect.colliderect(enemy_rect):
@@ -396,6 +429,8 @@ while running:
         screen.blit(portal, (portal_x, portal_y))
         if worlds[worlds_index] == 2:
             screen.blit(enemy, (ex, ey))
+        if worlds[worlds_index] == 3:
+            screen.blit(rush, (rx, ry))
         #print(portal_x)
         clock.tick(60)
         pygame.display.flip()
