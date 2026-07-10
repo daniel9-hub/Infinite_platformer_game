@@ -69,9 +69,10 @@ while running:
     enemy_jump = False
     eyv = 0
     enemy_touching_ground = False
-    enemy_jumpc = 20
+    enemy_jumpc = 24
     enemy_jumped = False
     enemy_direction = -5
+    
     class Platform(pygame.sprite.Sprite):
         def __init__(self, px, py,):
             super().__init__()
@@ -268,15 +269,16 @@ while running:
             enemy_rect.x = ex
             enemy_rect.y = ey
             
-        if touching_ground == True:
+        if touching_ground == True and enemy_touching_ground == True:
             if worlds[worlds_index] == 2:
                 if ex >= x:
-                    enemy_direction -= 5
+                    enemy_direction = -5
                 elif ex <= x:
-                    enemy_direction += 5
+                    enemy_direction = 5
+        
         if worlds[worlds_index] == 2:
             ex += enemy_direction
-        if enemy_jumpc == 20:
+        if enemy_jumpc == 24:
             ey += eyv
             eyv += 1
             
@@ -287,7 +289,7 @@ while running:
                 ey = (platform.rect.y - enemy_rect.height + 1)
                 eyv = 0
                 enemy_touching_ground = True
-                enemy_jumpc = 20
+                enemy_jumpc = 24
                 enemy_jumped = False
             
         if enemy_touching_ground == False and enemy_jumped == False:
@@ -296,7 +298,7 @@ while running:
                 ey -= enemy_jumpc
                 enemy_jumpc -=1
             if enemy_jumpc == 0:
-                enemy_jumpc = 20
+                enemy_jumpc = 24
                 enemy_jump = False
                 enemy_jumped = True
             
