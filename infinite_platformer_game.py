@@ -80,6 +80,13 @@ while running:
     rush_going = False
     rush_direction = -20
     rush_rect = rush.get_rect()
+    rush_warning = False
+    rush_warning_time = 0
+    rush_went = False
+    rush_ready = pygame.image.load("player.png")
+    rrx = 1280
+    rry = 500
+    rush_ready_counter = 0
     
     class Platform(pygame.sprite.Sprite):
         def __init__(self, px, py,):
@@ -291,7 +298,7 @@ while running:
             eyv += 1
             
         enemy_touching_ground = False
-        print((ex + (enemy_rect.width / 2)) - (x + (prect.width / 2)))
+        #print((ex + (enemy_rect.width / 2)) - (x + (prect.width / 2)))
         for platform in platforms:
             if enemy_rect.colliderect(platform.rect):
                 ey = (platform.rect.y - enemy_rect.height + 1)
@@ -318,15 +325,36 @@ while running:
                                         # RUSH
         if worlds[worlds_index] == 3:
             if rush_going == False:
-                rush_chance = random.randint(1,10)
+                rush_chance = random.randint(1,100)
                 if rush_chance == 1:
                     rush_going = True
             if rush_going == True:
-                if rx >= 1280:
-                    rush_direction = -20
-                elif rx <= 0 - (rush_rect.width):
-                    rush_direction = 20
-                rx += rush_direction
+                if rush_ready_counter < 80:
+                    rush_ready_counter += 1
+                    shake_force_x = 6
+                    shake = True
+                    rrx = 1200
+                elif rush_ready_counter == 80:
+                    rrx = 1280
+                    if rx >= 1280:
+                        if rush_went == True:
+                            rush_going = False
+                            rush_went = False
+                            rush_direction = 0
+                            rush_ready_counter = 0
+                            shake_force_x = 0
+                            
+                        else:
+                            rush_direction = -20
+                            
+                    elif rx <= 0 - (rush_rect.width):
+                        rush_direction = 20
+                        rush_went = True
+                        
+                    rx += rush_direction
+                    shake_force_x = 10
+                    shake = True
+                
                 
             rush_rect.x = rx
             rush_rect.y = ry
@@ -407,7 +435,7 @@ while running:
                     lightning_strike = False
                     lightning_time = 0
                     lightning_blit = True
-        
+        print(shake_force_x, shake)
         if shake == True:
             shake_x = random.randint(-shake_force_x, shake_force_x)
             shake_y = random.randint(-shake_force_y, shake_force_y)
@@ -431,6 +459,7 @@ while running:
             screen.blit(enemy, (ex, ey))
         if worlds[worlds_index] == 3:
             screen.blit(rush, (rx, ry))
+            screen.blit(rush_ready, (rrx, rry))
         #print(portal_x)
         clock.tick(60)
         pygame.display.flip()
