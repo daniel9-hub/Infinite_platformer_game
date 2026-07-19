@@ -15,7 +15,7 @@ original_portal_y = portal_y
 worlds = []
 
 for i in range(5):
-    world = random.randint(3,3)
+    world = random.randint(2,3)
     worlds.append(world)
 print(worlds)
 worlds_index = 0
@@ -87,6 +87,7 @@ while running:
     rrx = 1280
     rry = 500
     rush_ready_counter = 0
+    rush_side = random.randint(0,1)
     
     class Platform(pygame.sprite.Sprite):
         def __init__(self, px, py,):
@@ -333,23 +334,47 @@ while running:
                     rush_ready_counter += 1
                     shake_force_x = 6
                     shake = True
-                    rrx = 1200
+                    if rush_side == 0:
+                        rrx = 1200
+                        rx = 1280
+                    else:
+                        rrx = 0
+                        rx = (0 - rush_rect.width)
                 elif rush_ready_counter == 80:
                     rrx = 1280
-                    if rx >= 1280:
-                        if rush_went == True:
-                            rush_going = False
-                            rush_went = False
-                            rush_direction = 0
-                            rush_ready_counter = 0
-                            shake_force_x = 0
+                    if rush_side == 0:
+                        if rx >= 1280:
+                            if rush_went == True:
+                                rush_going = False
+                                rush_went = False
+                                rush_direction = 0
+                                rush_ready_counter = 0
+                                shake_force_x = 0
+                                rush_side = random.randint(0,1)
+                                
+                            else:
+                                rush_direction = -20
+
+                                
+                        elif rx <= 0 - (rush_rect.width):
+                            rush_direction = 20
+                            rush_went = True
+                    elif rush_side == 1:
+                        if rx <= 0 - (rush_rect.width):
+                            if rush_went == True:
+                                rush_going == False
+                                rush_went = False
+                                rush_direction = 0
+                                rush_ready_counter = 0
+                                shake_force_x = 0
+                                rush_side = random.randint(0,1)
                             
-                        else:
+                            else:
+                                rush_direction = 20
+                                
+                        elif rx >= 1280:
                             rush_direction = -20
-                            
-                    elif rx <= 0 - (rush_rect.width):
-                        rush_direction = 20
-                        rush_went = True
+                            rush_went = True
                         
                     rx += rush_direction
                     shake_force_x = 10
