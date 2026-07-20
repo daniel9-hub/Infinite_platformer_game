@@ -5,6 +5,7 @@ screen = pygame.display.set_mode((1280, 720))
 running = True
 clock = pygame.time.Clock()
 game_running = False
+pause = False
 
 
 portal_x = random.randint(-25000, 25000)
@@ -15,7 +16,7 @@ original_portal_y = portal_y
 worlds = []
 
 for i in range(5):
-    world = random.randint(2,3)
+    world = random.randint(3,3)
     worlds.append(world)
 print(worlds)
 worlds_index = 0
@@ -167,8 +168,11 @@ while running:
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    game_running = False
+                    pause = not pause
                     
+                    
+        if pause == True:
+            continue
                                                     # MOVEMENT
             
         keys = pygame.key.get_pressed()
