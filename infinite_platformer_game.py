@@ -16,7 +16,7 @@ original_portal_y = portal_y
 worlds = []
 
 for i in range(5):
-    world = random.randint(3,3)
+    world = random.randint(2,2)
     worlds.append(world)
 print(worlds)
 worlds_index = 0
@@ -168,10 +168,18 @@ while running:
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    pause = not pause
-                    
+                    if pause == True:
+                        pause = False
+                        game_running = False
+                    if pause == False:
+                        pause = True
+                if event.key == pygame.K_SPACE:
+                    pause = False
                     
         if pause == True:
+            screen.fill((0,0,0))
+            screen.blit(start_button,(490,320))
+            pygame.display.flip()
             continue
                                                     # MOVEMENT
             
