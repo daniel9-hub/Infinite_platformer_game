@@ -95,6 +95,7 @@ while running:
     fy = 420
     dfx = random.randint(0,1)
     dfy = random.randint(0,1)
+    floater_counter = 0
     
     class Platform(pygame.sprite.Sprite):
         def __init__(self, px, py,):
@@ -409,13 +410,18 @@ while running:
                                     # FLOATER
         if worlds[worlds_index] == 4:
             if dfx == 0:
-                fx += random.randint(-5,-3)
+                fx += random.randint(-3,-1)
             elif dfx == 1:
-                fx += random.randint(3,5)
+                fx += random.randint(1,3)
             if dfy == 0:
-                fy += random.randint(-5,-3)
+                fy += random.randint(-3,-1)
             elif dfy == 1:
-                fy += random.randint(3,5)
+                fy += random.randint(1,1)
+            floater_counter += 1
+            if floater_counter == 300:
+                dfx = random.randint(0,1)
+                dfy = random.randint(0,1)
+                floater_counter = 0
                 
         if y > 720:
             
