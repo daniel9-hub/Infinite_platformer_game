@@ -16,7 +16,7 @@ original_portal_y = portal_y
 worlds = []
 
 for i in range(5):
-    world = random.randint(2,2)
+    world = random.randint(4,4)
     worlds.append(world)
 print(worlds)
 worlds_index = 0
@@ -89,6 +89,12 @@ while running:
     rry = 500
     rush_ready_counter = 0
     rush_side = random.randint(0,1)
+    
+    floater = pygame.image.load("portal.png")
+    fx = 680
+    fy = 420
+    dfx = random.randint(0,1)
+    dfy = random.randint(0,1)
     
     class Platform(pygame.sprite.Sprite):
         def __init__(self, px, py,):
@@ -400,6 +406,17 @@ while running:
                 died = True
                 game_running = False
                 
+                                    # FLOATER
+        if worlds[worlds_index] == 4:
+            if dfx == 0:
+                fx += random.randint(-5,-3)
+            elif dfx == 1:
+                fx += random.randint(3,5)
+            if dfy == 0:
+                fy += random.randint(-5,-3)
+            elif dfy == 1:
+                fy += random.randint(3,5)
+                
         if y > 720:
             
             died = True
@@ -472,7 +489,7 @@ while running:
                     lightning_strike = False
                     lightning_time = 0
                     lightning_blit = True
-        print(shake_force_x, shake)
+        #print(shake_force_x, shake)
         if shake == True:
             shake_x = random.randint(-shake_force_x, shake_force_x)
             shake_y = random.randint(-shake_force_y, shake_force_y)
@@ -497,6 +514,8 @@ while running:
         if worlds[worlds_index] == 3:
             screen.blit(rush, (rx, ry))
             screen.blit(rush_ready, (rrx, rry))
+        if worlds[worlds_index] == 4:
+            screen.blit(floater, (fx, fy))
         #print(portal_x)
         clock.tick(60)
         pygame.display.flip()
