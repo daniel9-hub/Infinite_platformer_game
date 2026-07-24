@@ -99,6 +99,7 @@ while running:
     floater_visible = False
     floater_invisible_counter = 0
     floater_invisible_time = random.randint(80,180)
+    floater_rect = floater.get_rect()
     
     class Platform(pygame.sprite.Sprite):
         def __init__(self, px, py,):
@@ -429,6 +430,10 @@ while running:
                     floater_visible = False
                     fx = random.randint(0,1280)
                     fy = random.randint(0,720)
+                    while prect.colliderect(floater_rect):
+                        fx = random.randint(0,1280)
+                        fy = random.randint(0,720)
+                        
             elif floater_visible == False:
                 if floater_invisible_counter < floater_invisible_time:
                     floater_invisible_counter += 1
