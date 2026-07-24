@@ -96,6 +96,9 @@ while running:
     dfx = random.randint(0,1)
     dfy = random.randint(0,1)
     floater_counter = 0
+    floater_visible = False
+    floater_invisible_counter = 0
+    floater_invisible_time = random.randint(80,180)
     
     class Platform(pygame.sprite.Sprite):
         def __init__(self, px, py,):
@@ -407,22 +410,35 @@ while running:
                 died = True
                 game_running = False
                 
-                                    # FLOATER
+                                        # FLOATER
         if worlds[worlds_index] == 4:
-            if dfx == 0:
-                fx += random.randint(-3,-1)
-            elif dfx == 1:
-                fx += random.randint(1,3)
-            if dfy == 0:
-                fy += random.randint(-3,-1)
-            elif dfy == 1:
-                fy += random.randint(1,1)
-            floater_counter += 1
-            if floater_counter == 300:
-                dfx = random.randint(0,1)
-                dfy = random.randint(0,1)
-                floater_counter = 0
-                
+            if floater_visible == True:
+                if dfx == 0:
+                    fx += random.randint(-3,-1)
+                elif dfx == 1:
+                    fx += random.randint(1,3)
+                if dfy == 0:
+                    fy += random.randint(-3,-1)
+                elif dfy == 1:
+                    fy += random.randint(1,1)
+                floater_counter += 1
+                if floater_counter == 300:
+                    dfx = random.randint(0,1)
+                    dfy = random.randint(0,1)
+                    floater_counter = 0
+                    floater_visible = False
+                    fx = random.randint(0,1280)
+                    fy = random.randint(0,720)
+            elif floater_visible == False:
+                if floater_invisible_counter < floater_invisible_time:
+                    floater_invisible_counter += 1
+                elif floater_invisible_counter == floater_invisible_time:
+                    floater_invisible_counter = 0
+                    floater_visible = True
+                    floater_invisible_time = random.randint(80,180)
+                    
+        print(floater_invisible_time)
+        print(floater_invisible_counter)
         if y > 720:
             
             died = True
@@ -520,7 +536,7 @@ while running:
         if worlds[worlds_index] == 3:
             screen.blit(rush, (rx, ry))
             screen.blit(rush_ready, (rrx, rry))
-        if worlds[worlds_index] == 4:
+        if worlds[worlds_index] == 4 and floater_visible == True:
             screen.blit(floater, (fx, fy))
         #print(portal_x)
         clock.tick(60)
