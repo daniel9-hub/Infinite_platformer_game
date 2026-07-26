@@ -90,7 +90,7 @@ while running:
     rush_ready_counter = 0
     rush_side = random.randint(0,1)
     
-    floater = pygame.image.load("portal.png")
+    floater = pygame.image.load("player.png")
     fx = 680
     fy = 420
     dfx = random.randint(0,1)
@@ -100,6 +100,8 @@ while running:
     floater_invisible_counter = 0
     floater_invisible_time = random.randint(80,180)
     floater_rect = floater.get_rect()
+    floater_flash_counter = 0
+    floater_collision = False
     
     class Platform(pygame.sprite.Sprite):
         def __init__(self, px, py,):
@@ -412,6 +414,7 @@ while running:
                 game_running = False
                 
                                         # FLOATER
+        floater_rect.topleft = (fx,fy)
         if worlds[worlds_index] == 4:
             if floater_visible == True:
                 if dfx == 0:
@@ -423,6 +426,7 @@ while running:
                 elif dfy == 1:
                     fy += random.randint(1,1)
                 floater_counter += 1
+                floater_rect.topleft = (fx,fy)
                 if floater_counter == 300:
                     dfx = random.randint(0,1)
                     dfy = random.randint(0,1)
@@ -430,6 +434,7 @@ while running:
                     floater_visible = False
                     fx = random.randint(0,1280)
                     fy = random.randint(0,720)
+                    floater_rect.topleft = (fx,fy)
                     while prect.colliderect(floater_rect):
                         fx = random.randint(0,1280)
                         fy = random.randint(0,720)
@@ -543,6 +548,15 @@ while running:
             screen.blit(rush_ready, (rrx, rry))
         if worlds[worlds_index] == 4 and floater_visible == True:
             screen.blit(floater, (fx, fy))
+            if prect.colliderect(floater_rect) or floater_collision == True:
+                if floater_flash_counter < 60:
+                    screen.fill((255,255,255))
+                    floater_flash_counter += 1
+                    floater_collision = True
+                else:
+                    floater_flash_counter = 0
+                    floater_collision = False
+        
         #print(portal_x)
         clock.tick(60)
         pygame.display.flip()
