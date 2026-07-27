@@ -417,19 +417,13 @@ while running:
         floater_rect.topleft = (fx,fy)
         if worlds[worlds_index] == 4:
             if floater_visible == True:
-                if dfx == 0:
-                    fx += random.randint(-3,-1)
-                elif dfx == 1:
-                    fx += random.randint(1,3)
-                if dfy == 0:
-                    fy += random.randint(-3,-1)
-                elif dfy == 1:
-                    fy += random.randint(1,1)
+                fx += dfx
+                fy += dfy
                 floater_counter += 1
                 floater_rect.topleft = (fx,fy)
                 if floater_counter == 300:
-                    dfx = random.randint(0,1)
-                    dfy = random.randint(0,1)
+                    dfx = random.randint(-3,3)
+                    dfy = random.randint(-3,3)
                     floater_counter = 0
                     floater_visible = False
                     fx = random.randint(0,1280)
