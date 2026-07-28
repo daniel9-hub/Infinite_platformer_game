@@ -16,7 +16,7 @@ original_portal_y = portal_y
 worlds = []
 
 for i in range(5):
-    world = random.randint(4,4)
+    world = random.randint(3,3)
     worlds.append(world)
 print(worlds)
 worlds_index = 0
@@ -76,7 +76,7 @@ while running:
     
     rush = pygame.image.load("portal.png")
     rx = 1280
-    ry = 500
+    ry = 530
     rush_chance = 0
     rush_going = False
     rush_direction = -20
@@ -86,7 +86,7 @@ while running:
     rush_went = False
     rush_ready = pygame.image.load("player.png")
     rrx = 1280
-    rry = 500
+    rry = 530
     rush_ready_counter = 0
     rush_side = random.randint(0,1)
     
@@ -102,6 +102,9 @@ while running:
     floater_rect = floater.get_rect()
     floater_flash_counter = 0
     floater_collision = False
+    
+    direction_right = pygame.image.load("lightning.png")
+    direction_left = pygame.transform.flip(direction_right,True,False)
     
     class Platform(pygame.sprite.Sprite):
         def __init__(self, px, py,):
@@ -156,7 +159,10 @@ while running:
         
         touching_ground = False
         
-        
+        if portal_x > x:
+            direction = direction_right
+        elif portal_x < x:
+            direction = direction_left
         
                                                         # PLAYER PLATFORM COLLISION
         for platform in platforms:
@@ -241,7 +247,7 @@ while running:
         for platform in platforms[:]:
             if platform.rect.right < 0:
                 py = random.randint(500, 680)
-                newx = max(platform.rect.left for platform in platforms) + 550
+                newx = max(platform.rect.left for platform in platforms) + 600
                 
                 platforms.remove(platform)
                 
@@ -253,7 +259,7 @@ while running:
         for platform in platforms[:]:
             if platform.rect.left > 1280:
                 py = random.randint(500, 710)
-                newx = min(platform.rect.left for platform in platforms) - 550
+                newx = min(platform.rect.left for platform in platforms) - 600
                 
                 platforms.remove(platform)
                 
@@ -479,7 +485,7 @@ while running:
             teleport = True
         
         if teleport == True:
-            world = random.randint(1,2)
+            #world = random.randint(1,2)
             game_running = False
             #print("teleported")
         
@@ -550,6 +556,7 @@ while running:
                 else:
                     floater_flash_counter = 0
                     floater_collision = False
+        screen.blit(direction,(600,0))
         
         #print(portal_x)
         clock.tick(60)
@@ -562,7 +569,7 @@ while running:
     if died == True:
         #print("died")
         game_running = True
-        worlds_index = 0
+        #worlds_index = 0
     if died == False:
         game_running = False
     if teleport == True:
