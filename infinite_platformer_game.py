@@ -16,7 +16,7 @@ original_portal_y = portal_y
 worlds = []
 
 for i in range(5):
-    world = random.randint(3,3)
+    world = random.randint(4,4)
     worlds.append(world)
 print(worlds)
 worlds_index = 0
@@ -103,7 +103,7 @@ while running:
     floater_flash_counter = 0
     floater_collision = False
     
-    direction_right = pygame.image.load("lightning.png")
+    direction_right = pygame.image.load("direction.png")
     direction_left = pygame.transform.flip(direction_right,True,False)
     
     class Platform(pygame.sprite.Sprite):
@@ -319,9 +319,9 @@ while running:
         if touching_ground == True and enemy_touching_ground == True:
             if worlds[worlds_index] == 2:
                 if ex >= x:
-                    enemy_direction = -5
+                    enemy_direction = -8
                 elif ex <= x:
-                    enemy_direction = 5
+                    enemy_direction = 8
         
         if worlds[worlds_index] == 2:
             ex += enemy_direction
@@ -357,7 +357,7 @@ while running:
                                         # RUSH
         if worlds[worlds_index] == 3:
             if rush_going == False:
-                rush_chance = random.randint(1,100)
+                rush_chance = random.randint(1,200)
                 if rush_chance == 1:
                     rush_going = True
             if rush_going == True:
@@ -556,7 +556,7 @@ while running:
                 else:
                     floater_flash_counter = 0
                     floater_collision = False
-        screen.blit(direction,(600,0))
+        screen.blit(direction,(590,200))
         
         #print(portal_x)
         clock.tick(60)
