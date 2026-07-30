@@ -90,18 +90,26 @@ while running:
     rush_ready_counter = 0
     rush_side = random.randint(0,1)
     
-    floater = pygame.image.load("player.png")
     fx = 680
     fy = 420
-    dfx = random.randint(0,1)
-    dfy = random.randint(0,1)
+    class Floater(pygame.sprite.Sprite):
+        def __init__(self,fx,fy,):
+            super().__init__()
+            self.image = pygame.image.load("player.png")
+            self.dfx = random.randint(0,1)
+            self.dfy = random.randint(0,1)
+            self.rect = self.image.get_rect()
     floater_counter = 0
     floater_visible = False
     floater_invisible_counter = 0
     floater_invisible_time = random.randint(80,180)
-    floater_rect = floater.get_rect()
     floater_flash_counter = 0
     floater_collision = False
+    
+    floaters = []
+    
+    for i in range(random.randint(3,3)):
+        floaters.append(Floater(fx,fy))
     
     direction_right = pygame.image.load("direction.png")
     direction_left = pygame.transform.flip(direction_right,True,False)
@@ -170,7 +178,7 @@ while running:
                 y = (platform.rect.y - prect.height) + 1
                 touching_ground = True
         
-        for platform in platforms:
+        for platform in platforms: 
             if (platform.rect.left <= prect.centerx <= platform.rect.right):
                     if (y + prect.height) == platform.rect.y:
                         touching_ground = True
@@ -262,6 +270,7 @@ while running:
                 newx = min(platform.rect.left for platform in platforms) - 600
                 
                 platforms.remove(platform)
+                
                 
                 platforms.append(
                 Platform(newx, py)
@@ -420,35 +429,37 @@ while running:
                 game_running = False
                 
                                         # FLOATER
-        floater_rect.topleft = (fx,fy)
-        if worlds[worlds_index] == 4:
-            if floater_visible == True:
-                fx += dfx
-                fy += dfy
-                floater_counter += 1
-                floater_rect.topleft = (fx,fy)
-                if floater_counter == 300:
-                    dfx = random.randint(-3,3)
-                    dfy = random.randint(-3,3)
-                    floater_counter = 0
-                    floater_visible = False
-                    fx = random.randint(0,1280)
-                    fy = random.randint(0,720)
-                    floater_rect.topleft = (fx,fy)
-                    while prect.colliderect(floater_rect):
-                        fx = random.randint(0,1280)
-                        fy = random.randint(0,720)
-                        
-            elif floater_visible == False:
-                if floater_invisible_counter < floater_invisible_time:
-                    floater_invisible_counter += 1
-                elif floater_invisible_counter == floater_invisible_time:
-                    floater_invisible_counter = 0
-                    floater_visible = True
-                    floater_invisible_time = random.randint(80,180)
+        for floater in floaters:
+            
+            if worlds[worlds_index] == 4:
+                if floater_visible == True:
+                    floater.rect.x += floater.dfx
+                    floater.rect.y += floater.dfy
+                    floater_counter += 1
                     
-        print(floater_invisible_time)
-        print(floater_invisible_counter)
+                    if floater_counter == 300:
+                        floater.dfx = random.randint(-3,3)
+                        floater.dfy = random.randint(-3,3)
+                        floater_counter = 0
+                        floater_visible = False
+                        floater.rect.x = random.randint(0,1280)
+                        floater.rect.y = random.randint(0,720)
+                        
+                        
+                        while prect.colliderect(floater.rect):
+                            fx = random.randint(0,1280)
+                            fy = random.randint(0,720)
+                            
+                elif floater_visible == False:
+                    if floater_invisible_counter < floater_invisible_time:
+                        floater_invisible_counter += 1
+                    elif floater_invisible_counter == floater_invisible_time:
+                        floater_invisible_counter = 0
+                        floater_visible = True
+                        floater_invisible_time = random.randint(80,180)
+        
+        #print(floater_invisible_time)
+        #print(floater_invisible_counter)
         if y > 720:
             
             died = True
@@ -475,7 +486,7 @@ while running:
                         if platform.rect.x < lightning_x < (platform.rect.x + platform.rect.width):
                             lightning_y = (platform.rect.y - 800)
                             break
-                        else:
+                        else: 
                             lightning_y = 0
                     lightning_rect.x = lightning_x
                     lightning_rect.y = lightning_y
@@ -547,15 +558,16 @@ while running:
             screen.blit(rush, (rx, ry))
             screen.blit(rush_ready, (rrx, rry))
         if worlds[worlds_index] == 4 and floater_visible == True:
-            screen.blit(floater, (fx, fy))
-            if prect.colliderect(floater_rect) or floater_collision == True:
-                if floater_flash_counter < 60:
-                    screen.fill((255,255,255))
-                    floater_flash_counter += 1
-                    floater_collision = True
-                else:
-                    floater_flash_counter = 0
-                    floater_collision = False
+            for floater in floaters:
+                screen.blit(floater.image, floater.rect)
+                if prect.colliderect(floater.rect) or floater_collision == True:
+                    if floater_flash_counter < 60:
+                        screen.fill((255,255,255))
+                        floater_flash_counter += 1
+                        floater_collision = True
+                    else:
+                        floater_flash_counter = 0
+                        floater_collision = False
         screen.blit(direction,(590,200))
         
         #print(portal_x)
