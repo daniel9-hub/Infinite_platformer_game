@@ -462,7 +462,8 @@ while running:
                         floater_invisible_counter = 0
                         floater_visible = True
                         floater_invisible_time = random.randint(80,180)
-        
+        if random.randint(0,1000) == 0:
+            floaters.append(Floater(random.randint(0,1280),random.randint(0,720)))
         #print(floater_invisible_time)
         #print(floater_invisible_counter)
         if y > 720:
