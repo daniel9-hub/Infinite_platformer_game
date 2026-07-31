@@ -110,6 +110,9 @@ while running:
     
     for i in range(random.randint(3,3)):
         floaters.append(Floater(fx,fy))
+    for floater in floaters:
+        floater.rect.x = random.randint(0,1280)
+        floater.rect.y = random.randint(0,720)
     
     direction_right = pygame.image.load("direction.png")
     direction_left = pygame.transform.flip(direction_right,True,False)
