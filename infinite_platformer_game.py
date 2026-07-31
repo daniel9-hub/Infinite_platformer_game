@@ -375,7 +375,7 @@ while running:
                     shake_force_x = 6
                     shake = True
                     if rush_side == 0:
-                        rrx = 1200
+                        rrx = 120
                         rx = 1280
                     else:
                         rrx = 0
@@ -429,26 +429,28 @@ while running:
                 game_running = False
                 
                                         # FLOATER
-        for floater in floaters:
+        if worlds[worlds_index] == 4:
+            floater_counter += 1
+            for floater in floaters:
             
-            if worlds[worlds_index] == 4:
                 if floater_visible == True:
                     floater.rect.x += floater.dfx
                     floater.rect.y += floater.dfy
-                    floater_counter += 1
                     
-                    if floater_counter == 300:
+                    
+                    if floater_counter >= 300:
                         floater.dfx = random.randint(-3,3)
                         floater.dfy = random.randint(-3,3)
                         floater_counter = 0
                         floater_visible = False
-                        floater.rect.x = random.randint(0,1280)
-                        floater.rect.y = random.randint(0,720)
+                        for floater in floaters:
+                            floater.rect.x = random.randint(0,1280)
+                            floater.rect.y = random.randint(0,720)
                         
                         
                         while prect.colliderect(floater.rect):
-                            fx = random.randint(0,1280)
-                            fy = random.randint(0,720)
+                            floater.rect.x = random.randint(0,1280)
+                            floater.rect.y = random.randint(0,720)
                             
                 elif floater_visible == False:
                     if floater_invisible_counter < floater_invisible_time:
