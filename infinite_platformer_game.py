@@ -8,7 +8,7 @@ game_running = False
 pause = False
 
 
-portal_x = random.randint(-25000, 25000)
+portal_x = random.randint(-2500, 2500)
 portal_y = random.randint(200, 300)
 original_portal_x = portal_x
 original_portal_y = portal_y
@@ -142,7 +142,8 @@ while running:
             
             
         
-
+    endless = True
+    
     prect = player.get_rect()
     prect.topleft = (x, y)
     yd = prect.bottom
@@ -505,6 +506,9 @@ while running:
             #world = random.randint(1,2)
             game_running = False
             #print("teleported")
+            if endless == True:
+                worlds.clear()
+                worlds.append(random.randint(0,4))
         
                                                         # END
         for platform in platforms:
@@ -592,9 +596,10 @@ while running:
         game_running = False
     if teleport == True:
         game_running = True
-        portal_x = random.randint(-25000, 25000)
+        portal_x = random.randint(-2500, 2500)
         portal_y = random.randint(200, 300)
-        worlds_index += 1
+        if endless == False:
+            worlds_index += 1
         teleport = False
     for event in pygame.event.get():
             if event.type == pygame.QUIT:
