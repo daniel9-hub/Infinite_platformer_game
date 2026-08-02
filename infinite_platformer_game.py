@@ -16,7 +16,7 @@ original_portal_y = portal_y
 worlds = []
 
 for i in range(5):
-    world = random.randint(4,4)
+    world = random.randint(3,3)
     worlds.append(world)
 print(worlds)
 worlds_index = 0
@@ -379,7 +379,7 @@ while running:
                     shake_force_x = 6
                     shake = True
                     if rush_side == 0:
-                        rrx = 120
+                        rrx = 1200
                         rx = 1280
                     else:
                         rrx = 0
