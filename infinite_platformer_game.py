@@ -13,14 +13,26 @@ portal_y = random.randint(200, 300)
 original_portal_x = portal_x
 original_portal_y = portal_y
 
+level = 1
+endscreen = False
+
 worlds = []
 
 for i in range(5):
-    world = random.randint(3,3)
+    world = random.randint(0,0)
     worlds.append(world)
 print(worlds)
 worlds_index = 0
 while running:
+    while endscreen:
+        screen.fill((0,0,0))
+        pygame.display.flip()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                game_running = False
+                running = False
+                endscreen = False
+            
     died = False
     vh = 5
     vg = 0
@@ -142,7 +154,7 @@ while running:
             
             
         
-    endless = True
+    endless = False
     
     prect = player.get_rect()
     prect.topleft = (x, y)
@@ -332,9 +344,9 @@ while running:
         if touching_ground == True and enemy_touching_ground == True:
             if worlds[worlds_index] == 2:
                 if ex >= x:
-                    enemy_direction = -8
+                    enemy_direction = -7
                 elif ex <= x:
-                    enemy_direction = 8
+                    enemy_direction = 7
         
         if worlds[worlds_index] == 2:
             ex += enemy_direction
@@ -363,9 +375,12 @@ while running:
                 enemy_jumped = True
         
         if ey > 720:
-            ex = (1280 - enemy_rect.width)
-            ey = 0
-            
+            if ex < x:
+                ex = (1280 - enemy_rect.width)
+                ey = 0
+            else:
+                ex = 0
+                ey = 0
             
                                         # RUSH
         if worlds[worlds_index] == 3:
@@ -596,6 +611,9 @@ while running:
         game_running = False
     if teleport == True:
         game_running = True
+        level += 1
+        if level == 6 and endless == False:
+            endscreen = True
         portal_x = random.randint(-2500, 2500)
         portal_y = random.randint(200, 300)
         if endless == False:
