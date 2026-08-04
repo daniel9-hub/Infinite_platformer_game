@@ -126,8 +126,8 @@ while running:
         floater.rect.x = random.randint(0,1280)
         floater.rect.y = random.randint(0,720)
     
-    direction_right = pygame.image.load("direction.png")
-    direction_left = pygame.transform.flip(direction_right,True,False)
+    direction_right = pygame.image.load("direction.jpg")
+    direction_left = pygame.image.load("direction2.jpg")
     
     class Platform(pygame.sprite.Sprite):
         def __init__(self, px, py,):
@@ -593,7 +593,7 @@ while running:
                     else:
                         floater_flash_counter = 0
                         floater_collision = False
-        screen.blit(direction,(590,200))
+        screen.blit(direction,(540,200))
         
         #print(portal_x)
         clock.tick(60)
