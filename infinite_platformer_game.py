@@ -19,7 +19,7 @@ endscreen = False
 worlds = []
 
 for i in range(5):
-    world = random.randint(0,0)
+    world = random.randint(1,1)
     worlds.append(world)
 print(worlds)
 worlds_index = 0
@@ -70,8 +70,9 @@ while running:
     portal_rect = portal.get_rect()
     teleport = False
     
-    lightning = pygame.image.load("lightning.png")
+    lightning = pygame.image.load("lightning.jpg")
     lightning_rect = lightning.get_rect()
+    background1 = pygame.image.load("background1.jpg")
                                                 # ENEMY SETUP
     enemy = pygame.image.load("player.png")
     enemy_rect = enemy.get_rect()
@@ -530,7 +531,7 @@ while running:
             platform.update()
         
         screen.fill((0,0,0))
-        
+        screen.blit(background1,(0,0))
         
                                                                                                     # LIGHTNING 2
         if worlds[worlds_index] == 1:
