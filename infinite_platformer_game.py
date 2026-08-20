@@ -19,7 +19,7 @@ endscreen = False
 worlds = []
 
 for i in range(5):
-    world = random.randint(1,1)
+    world = random.randint(2,2)
     worlds.append(world)
 print(worlds)
 worlds_index = 0
@@ -86,8 +86,9 @@ while running:
     enemy_jumpc = 24
     enemy_jumped = False
     enemy_direction = -5
+    background2 = pygame.image.load("background2.jpg")
     
-    rush = pygame.image.load("portal.png")
+    rush = pygame.image.load("rush.jpg  ")
     rx = 1280
     ry = 530
     rush_chance = 0
@@ -102,6 +103,7 @@ while running:
     rry = 530
     rush_ready_counter = 0
     rush_side = random.randint(0,1)
+    background3 = pygame.image.load("background3.jpg")
     
     fx = 680
     fy = 420
@@ -203,6 +205,21 @@ while running:
         if touching_ground == True:
             yv = 0
         
+        if worlds[worlds_index] == 0:
+            for platform in platforms:
+                platform.image = pygame.image.load("platform.png")
+        elif worlds[worlds_index] == 1:
+            for platform in platforms:
+                platform.image = pygame.image.load("platform1.jpg")
+        elif worlds[worlds_index] == 2:
+            for platform in platforms:
+                platform.image = pygame.image.load("platform2.jpg")
+        elif worlds[worlds_index] == 3:
+            for platform in platforms:
+                platform.image = pygame.image.load("platform3.jpg")
+        elif worlds[worlds_index] == 4:
+            for platform in platforms:
+                platform.image = pygame.image.load("platform.png")
         
         
         for event in pygame.event.get():
@@ -341,7 +358,7 @@ while running:
         if worlds[worlds_index] == 2:
             enemy_rect.x = ex
             enemy_rect.y = ey
-            
+            background = background2
         if touching_ground == True and enemy_touching_ground == True:
             if worlds[worlds_index] == 2:
                 if ex >= x:
@@ -385,6 +402,7 @@ while running:
             
                                         # RUSH
         if worlds[worlds_index] == 3:
+            background = background3
             if rush_going == False:
                 rush_chance = random.randint(1,200)
                 if rush_chance == 1:
@@ -451,6 +469,7 @@ while running:
                                         # FLOATER
         if worlds[worlds_index] == 4:
             floater_counter += 1
+            background = background4
             for floater in floaters:
             
                 if floater_visible == True:
@@ -499,6 +518,7 @@ while running:
             print("died")
                                                             # LIGHTNING
         if worlds[worlds_index] == 1:
+            background = background1
             if lightning_strike == False:
                 lightning_chance = random.randint(1, 20)
                 if lightning_chance == 1:
@@ -531,7 +551,7 @@ while running:
             platform.update()
         
         screen.fill((0,0,0))
-        screen.blit(background1,(0,0))
+        screen.blit(background,(0,0))
         
                                                                                                     # LIGHTNING 2
         if worlds[worlds_index] == 1:
