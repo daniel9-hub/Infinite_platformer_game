@@ -17,7 +17,7 @@ level = 1
 endscreen = False
 
 worlds = []
-
+water = pygame.image.load("water.png")
 for i in range(5):
     world = random.randint(4,4)
     worlds.append(world)
@@ -629,7 +629,8 @@ while running:
                         floater_flash_counter = 0
                         floater_collision = False
         screen.blit(direction,(540,200))
-        
+        if worlds[worlds_index] == 4:
+            screen.blit(water,(0,0))
         #print(portal_x)
         clock.tick(60)
         pygame.display.flip()
