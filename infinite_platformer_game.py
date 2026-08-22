@@ -19,7 +19,7 @@ endscreen = False
 worlds = []
 
 for i in range(5):
-    world = random.randint(2,2)
+    world = random.randint(4,4)
     worlds.append(world)
 print(worlds)
 worlds_index = 0
@@ -74,7 +74,7 @@ while running:
     lightning_rect = lightning.get_rect()
     background1 = pygame.image.load("background1.jpg")
                                                 # ENEMY SETUP
-    enemy = pygame.image.load("player.png")
+    enemy = pygame.image.load("enemy.jpg")
     enemy_rect = enemy.get_rect()
     ex = 900
     ey = 300
@@ -120,6 +120,7 @@ while running:
     floater_invisible_time = random.randint(80,180)
     floater_flash_counter = 0
     floater_collision = False
+    background4 = pygame.image.load("background4.jpg")
     
     floaters = []
     
@@ -208,9 +209,11 @@ while running:
         if worlds[worlds_index] == 0:
             for platform in platforms:
                 platform.image = pygame.image.load("platform.png")
+            portal = pygame.image.load("portal - Copy.png")
         elif worlds[worlds_index] == 1:
             for platform in platforms:
                 platform.image = pygame.image.load("platform1.jpg")
+            portal = pygame.image.load("portal - Copy.png")
         elif worlds[worlds_index] == 2:
             for platform in platforms:
                 platform.image = pygame.image.load("platform2.jpg")
@@ -281,9 +284,13 @@ while running:
                 x += 7
             
             
-        if keys[pygame.K_SPACE] and touching_ground:
+        if keys[pygame.K_SPACE] and touching_ground and not worlds[worlds_index] == 4:
             jump = True
             touching_ground = False
+        elif keys[pygame.K_SPACE] and worlds[worlds_index] == 4:
+            up = True
+        else:
+            up = False
             
                                                                                     # PLATFORM RESPAWN
         for platform in platforms[:]:
@@ -315,20 +322,24 @@ while running:
         
         
                                                                         # JUMP
-        
-        if jump == True:
-                if jumpc > 0:
-                        y -= jumpc
-                        jumpc -= 1
-                else:
-                    jumpc = 20
-                    jump = False
+        if not worlds[worlds_index] == 4:
+            g = 1
+            if jump == True:
+                    if jumpc > 0:
+                            y -= jumpc
+                            jumpc -= 1
+                    else:
+                        jumpc = 20
+                        jump = False
                     
-        
+        if worlds[worlds_index] == 4:
+            g = 0.1
+            if up == True:
+                yv -= 0.3
         
         if jump == False and touching_ground == False:
             y += yv
-            yv += 1
+            yv += g
             
                                                         # SHAKE
         if 5000 < abs(portal_x) < 25000:
@@ -403,6 +414,8 @@ while running:
                                         # RUSH
         if worlds[worlds_index] == 3:
             background = background3
+            portal = pygame.image.load("portal - Copy.png")
+            portal = pygame.image.load("portal3.jpg")
             if rush_going == False:
                 rush_chance = random.randint(1,200)
                 if rush_chance == 1:
@@ -470,6 +483,7 @@ while running:
         if worlds[worlds_index] == 4:
             floater_counter += 1
             background = background4
+            portal = pygame.image.load("portal4.jpg")
             for floater in floaters:
             
                 if floater_visible == True:
