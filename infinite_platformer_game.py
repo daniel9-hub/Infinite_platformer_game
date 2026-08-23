@@ -74,10 +74,10 @@ while running:
     lightning_rect = lightning.get_rect()
     background1 = pygame.image.load("background1.jpg")
                                                 # ENEMY SETUP
-    enemy = pygame.image.load("enemy.jpg")
+    enemy = pygame.image.load("enemy.png")
     enemy_rect = enemy.get_rect()
     ex = 900
-    ey = 300
+    ey = 100
     enemy_rect.x = -300
     enemy_rect.y = -500
     enemy_jump = False
@@ -222,7 +222,7 @@ while running:
                 platform.image = pygame.image.load("platform3.jpg")
         elif worlds[worlds_index] == 4:
             for platform in platforms:
-                platform.image = pygame.image.load("platform.png")
+                platform.image = pygame.image.load("platform4.png")
         
         
         for event in pygame.event.get():
