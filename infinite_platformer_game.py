@@ -484,6 +484,9 @@ while running:
             floater_counter += 1
             background = background4
             portal = pygame.image.load("portal4.jpg")
+            if y < -200:
+                died = True
+                game_running = False
             for floater in floaters:
             
                 if floater_visible == True:
