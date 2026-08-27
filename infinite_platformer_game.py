@@ -6,12 +6,17 @@ running = True
 clock = pygame.time.Clock()
 game_running = False
 pause = False
-
+font = pygame.font.Font(None, size=40)
+text_normal = font.render("NORMAL MODE",True,(255,255,255))
+text_infinite = font.render("INFINITE MODE",True,(255,255,255))
+normal_position = 535
+infinite_position = 900
+endless = False
 
 portal_x = random.randint(-2500, 2500)
 portal_y = random.randint(200, 300)
 original_portal_x = portal_x
-original_portal_y = portal_y
+original_portal_y = portal_y 
 
 level = 1
 endscreen = False
@@ -63,14 +68,15 @@ while running:
 
     player = pygame.image.load("player.png")
 
-    start_button = pygame.image.load("platform.png")
+    start_button = font.render("""Press "SPACE" to play""",True,(255,255,255))
     start_button_rect = start_button.get_rect()
     
     portal = pygame.image.load("portal.png")
     portal_rect = portal.get_rect()
     teleport = False
     
-    lightning = pygame.image.load("lightning.jpg")
+    lightning_warning = pygame.image.load("lightning_warning.png")
+    lightning = pygame.image.load("lightning.png")
     lightning_rect = lightning.get_rect()
     background1 = pygame.image.load("background1.jpg")
                                                 # ENEMY SETUP
@@ -158,7 +164,7 @@ while running:
             
             
         
-    endless = False
+    
     
     prect = player.get_rect()
     prect.topleft = (x, y)
@@ -213,7 +219,7 @@ while running:
         elif worlds[worlds_index] == 1:
             for platform in platforms:
                 platform.image = pygame.image.load("platform1.jpg")
-            portal = pygame.image.load("portal - Copy.png")
+            portal = pygame.image.load("portal1.png")
         elif worlds[worlds_index] == 2:
             for platform in platforms:
                 platform.image = pygame.image.load("platform2.jpg")
@@ -483,7 +489,7 @@ while running:
         if worlds[worlds_index] == 4:
             floater_counter += 1
             background = background4
-            portal = pygame.image.load("portal4.jpg")
+            portal = pygame.image.load("portal4.png")
             if y < -200:
                 died = True
                 game_running = False
@@ -574,7 +580,7 @@ while running:
         if worlds[worlds_index] == 1:
             if lightning_strike == True:
                 if lightning_blit == True:              # START
-                    screen.blit(lightning, (lightning_x, lightning_y))
+                    screen.blit(lightning_warning, (lightning_x, (lightning_y + 720)))
                     lightning_time += 1
                 if 45 > lightning_time >= 30:           # OFF
                     lightning_time += 1
@@ -667,10 +673,18 @@ while running:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     game_running = True
-                
-    
-    screen.blit(start_button, (490, 320))
-    
+                if event.key == pygame.K_a:
+                    normal_position -=350
+                    infinite_position -=350
+                    endless = True
+                if event.key == pygame.K_d:
+                    normal_position +=350
+                    infinite_position +=350
+                    endless = False
+    print(endless)
+    screen.blit(start_button, (500, 320))
+    screen.blit(text_normal, (normal_position,500))
+    screen.blit(text_infinite, (infinite_position,500))
     
     pygame.display.flip()
     
