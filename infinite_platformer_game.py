@@ -674,11 +674,11 @@ while running:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     game_running = True
-                if event.key == pygame.K_a:
+                if event.key == pygame.K_a and endless == False:
                     normal_position -=350
                     infinite_position -=350
                     endless = True
-                if event.key == pygame.K_d:
+                if event.key == pygame.K_d and endless == True:
                     normal_position +=350
                     infinite_position +=350
                     endless = False
