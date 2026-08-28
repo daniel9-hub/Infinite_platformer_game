@@ -12,7 +12,7 @@ text_infinite = font.render("INFINITE MODE",True,(255,255,255))
 normal_position = 535
 infinite_position = 900
 endless = False
-
+main_menu = True
 portal_x = random.randint(-2500, 2500)
 portal_y = random.randint(200, 300)
 original_portal_x = portal_x
@@ -190,7 +190,7 @@ while running:
         portal_rect.x = portal_x
         portal_rect.y = portal_y
         
-        
+        main_menu = False
         touching_ground = False
         
         if portal_x > x:
@@ -241,6 +241,7 @@ while running:
                     if pause == True:
                         pause = False
                         game_running = False
+                        main_menu = True
                     if pause == False:
                         pause = True
                 if event.key == pygame.K_SPACE:
@@ -324,8 +325,8 @@ while running:
             )   
                 score -= 1
         
-        
-        
+        if worlds[worlds_index] == 0:
+            background = pygame.image.load("background0.png")
         
                                                                         # JUMP
         if not worlds[worlds_index] == 4:
@@ -681,11 +682,11 @@ while running:
                     normal_position +=350
                     infinite_position +=350
                     endless = False
+    if main_menu:
+        screen.blit(start_button, (500, 320))
+        screen.blit(text_normal, (normal_position,500))
+        screen.blit(text_infinite, (infinite_position,500))
     print(endless)
-    screen.blit(start_button, (500, 320))
-    screen.blit(text_normal, (normal_position,500))
-    screen.blit(text_infinite, (infinite_position,500))
-    
     pygame.display.flip()
     
     #print(1280 - start_button_rect.width)
