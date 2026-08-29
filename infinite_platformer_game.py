@@ -13,6 +13,8 @@ normal_position = 535
 infinite_position = 900
 endless = False
 main_menu = True
+menu_move_left = False
+menu_move_right = False
 portal_x = random.randint(-2500, 2500)
 portal_y = random.randint(200, 300)
 original_portal_x = portal_x
@@ -670,18 +672,40 @@ while running:
                 
                 running = False
                 game_running = False
-            
+                                                # MODE SELECT
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     game_running = True
                 if event.key == pygame.K_a and endless == False:
-                    normal_position -=350
-                    infinite_position -=350
-                    endless = True
-                if event.key == pygame.K_d and endless == True:
-                    normal_position +=350
-                    infinite_position +=350
-                    endless = False
+                    menu_move_left = True
+                elif event.key == pygame.K_d and endless == True:
+                    menu_move_right = True
+    if menu_move_left == True:                    # MENU MOVE LEFT
+        if infinite_position > 550 and menu_move_left == True:
+            while infinite_position > 550:
+                normal_position -=7
+                infinite_position -=7
+                clock.tick(60000)
+                screen.blit(text_normal,(normal_position,500))
+                screen.blit(text_infinite,(infinite_position,500))
+                pygame.display.flip()
+                screen.fill((0,0,0))
+        elif infinite_position == 550:
+            endless = True
+            menu_move_left = False
+    if menu_move_right == True:
+        if normal_position < 535 and menu_move_right == True:
+            while normal_position < 535:
+                normal_position +=7
+                infinite_position +=7
+                clock.tick(60000)
+                screen.blit(text_normal,(normal_position,500))
+                screen.blit(text_infinite,(infinite_position,500))
+                pygame.display.flip()
+                screen.fill((0,0,0))
+        elif normal_position == 535:
+            endless = False
+            menu_move_right = False
     if main_menu:
         screen.blit(start_button, (500, 320))
         screen.blit(text_normal, (normal_position,500))
