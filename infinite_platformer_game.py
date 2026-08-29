@@ -688,12 +688,13 @@ while running:
                 clock.tick(60000)
                 screen.blit(text_normal,(normal_position,500))
                 screen.blit(text_infinite,(infinite_position,500))
+                screen.blit(start_button,(500,320))
                 pygame.display.flip()
                 screen.fill((0,0,0))
         elif infinite_position == 550:
             endless = True
             menu_move_left = False
-    if menu_move_right == True:
+    if menu_move_right == True:                    # MENU MOVE RIGHT
         if normal_position < 535 and menu_move_right == True:
             while normal_position < 535:
                 normal_position +=7
@@ -701,6 +702,7 @@ while running:
                 clock.tick(60000)
                 screen.blit(text_normal,(normal_position,500))
                 screen.blit(text_infinite,(infinite_position,500))
+                screen.blit(start_button,(500,320))
                 pygame.display.flip()
                 screen.fill((0,0,0))
         elif normal_position == 535:
