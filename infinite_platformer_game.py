@@ -118,7 +118,8 @@ while running:
     class Floater(pygame.sprite.Sprite):
         def __init__(self,fx,fy,):
             super().__init__()
-            self.image = pygame.image.load("player.png")
+            self.images = [pygame.image.load("floater1.png"),pygame.image.load("floater2.png"),pygame.image.load("floater3.png"),pygame.image.load("floater4.png")]
+            self.image = random.choice(self.images)
             self.dfx = random.randint(0,1)
             self.dfy = random.randint(0,1)
             self.rect = self.image.get_rect()
