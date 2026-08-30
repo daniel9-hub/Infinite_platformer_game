@@ -525,6 +525,9 @@ while running:
                         floater_invisible_counter = 0
                         floater_visible = True
                         floater_invisible_time = random.randint(80,180)
+                        for floater in floaters:
+                            floater.images = [pygame.image.load("floater1.png"),pygame.image.load("floater2.png"),pygame.image.load("floater3.png"),pygame.image.load("floater4.png")]
+                            floater.image = random.choice(floater.images)
         if random.randint(0,1000) == 0:
             floaters.append(Floater(random.randint(0,1280),random.randint(0,720)))
         #print(floater_invisible_time)
