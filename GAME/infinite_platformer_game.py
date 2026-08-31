@@ -23,12 +23,14 @@ paused = font.render("PAUSED",True,(255,255,255))
 level = 1
 endscreen = False
 endscreen_image = pygame.image.load("endscreen.png")
+world_counter = 0
+world_counter_text = font.render(str(world_counter),True,(255,255,255))
 worlds = []
 water = pygame.image.load("water.png")
 for i in range(5):
     world = random.randint(0,4)
     worlds.append(world)
-print(worlds)
+#print(worlds)
 worlds_index = 0
 menu_logo = pygame.image.load("menu_logo.png")
 while running:
@@ -139,7 +141,7 @@ while running:
     
     floaters = []
     
-    for i in range(random.randint(3,3)):
+    for i in range(random.randint(3,5)):
         floaters.append(Floater(fx,fy))
     for floater in floaters:
         floater.rect.x = random.randint(0,1280)
@@ -554,7 +556,7 @@ while running:
         if prect.colliderect(enemy_rect):
             died = True
             game_running = False
-            print("died")
+            #print("died")
                                                             # LIGHTNING
         if worlds[worlds_index] == 1:
             background = background1
@@ -574,7 +576,7 @@ while running:
                             lightning_warning_y = 640
                     lightning_rect.x = lightning_x
                     lightning_rect.y = lightning_y
-            print(lightning_warning_y)
+            #(lightning_warning_y)
                                                         # TELEPORT
         if prect.colliderect(portal_rect):
             teleport = True
@@ -586,7 +588,8 @@ while running:
             if endless == True:
                 worlds.clear()
                 worlds.append(random.randint(0,4))
-        
+                world_counter += 1
+                world_counter_text = font.render(str(world_counter),True,(0,0,255))
                                                         # END
         for platform in platforms:
             platform.update()
@@ -633,10 +636,11 @@ while running:
         for platform in platforms:
             screen.blit(platform.image, (platform.rect.x + shake_x, platform.rect.y + shake_y))
         
-        
+        print(endless)
         #print(lightning_time)
         #print(lightning_strike)
-        
+        if endless:
+            screen.blit(world_counter_text,(630,100))
         screen.blit(player_final, (x, y))
         screen.blit(portal, (portal_x, portal_y))
         if worlds[worlds_index] == 2:
@@ -649,9 +653,8 @@ while running:
                 screen.blit(floater.image, floater.rect)
                 if prect.colliderect(floater.rect) or floater_collision == True:
                     if floater_flash_counter < 60:
-                        screen.fill((255,255,255))
-                        floater_flash_counter += 1
-                        floater_collision = True
+                        died = True
+                        game_running = False
                     else:
                         floater_flash_counter = 0
                         floater_collision = False
@@ -730,7 +733,7 @@ while running:
         screen.blit(text_normal, (normal_position,500))
         screen.blit(text_infinite, (infinite_position,500))
         screen.blit(menu_logo,(0,0))
-    print(endless)
+    #print(endless)
     pygame.display.flip()
     
     #print(1280 - start_button_rect.width)
