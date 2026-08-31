@@ -26,7 +26,7 @@ endscreen = False
 worlds = []
 water = pygame.image.load("water.png")
 for i in range(5):
-    world = random.randint(4,4)
+    world = random.randint(1,1)
     worlds.append(world)
 print(worlds)
 worlds_index = 0
@@ -81,6 +81,7 @@ while running:
     lightning = pygame.image.load("lightning.png")
     lightning_rect = lightning.get_rect()
     background1 = pygame.image.load("background1.jpg")
+    lightning_warning_y = 640
                                                 # ENEMY SETUP
     enemy = pygame.image.load("enemy.png")
     enemy_rect = enemy.get_rect()
@@ -96,7 +97,7 @@ while running:
     enemy_direction = -5
     background2 = pygame.image.load("background2.jpg")
     
-    rush = pygame.image.load("rush.jpg  ")
+    rush = pygame.image.load("rush.png  ")
     rx = 1280
     ry = 530
     rush_chance = 0
@@ -558,12 +559,14 @@ while running:
                     for platform in platforms:
                         if platform.rect.x < lightning_x < (platform.rect.x + platform.rect.width):
                             lightning_y = (platform.rect.y - 800)
+                            lightning_warning_y = (lightning_y + 720)
                             break
                         else: 
                             lightning_y = 0
+                            lightning_warning_y = 640
                     lightning_rect.x = lightning_x
                     lightning_rect.y = lightning_y
-                
+            print(lightning_warning_y)
                                                         # TELEPORT
         if prect.colliderect(portal_rect):
             teleport = True
@@ -587,7 +590,7 @@ while running:
         if worlds[worlds_index] == 1:
             if lightning_strike == True:
                 if lightning_blit == True:              # START
-                    screen.blit(lightning_warning, (lightning_x, (lightning_y + 720)))
+                    screen.blit(lightning_warning, (lightning_x, lightning_warning_y))
                     lightning_time += 1
                 if 45 > lightning_time >= 30:           # OFF
                     lightning_time += 1
