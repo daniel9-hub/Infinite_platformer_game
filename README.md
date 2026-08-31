@@ -1,4 +1,4 @@
-# Platformer game
+# Platform explorer
 This is a game about exploring different worlds and trying to either get to the end or trying to go as far as you can. I made it because i wanted to get better at coding in python, which is why i made it in pygame.
 
 # About the game
