@@ -69,7 +69,8 @@ while running:
     touching_ground = False
 
     player = pygame.image.load("player.png")
-
+    player_left = pygame.transform.flip(player,True,False)
+    player_final = player
     start_button = font.render("""Press "SPACE" to play""",True,(255,255,255))
     start_button_rect = start_button.get_rect()
     
@@ -274,7 +275,7 @@ while running:
                 ex += 7
             else:
                 x -= 7
-            
+            player_final = player_left
             
             
         if keys[pygame.K_d]:
@@ -293,7 +294,7 @@ while running:
                 ex -= 7
             else:
                 x += 7
-            
+            player_final = player
             
         if keys[pygame.K_SPACE] and touching_ground and not worlds[worlds_index] == 4:
             jump = True
@@ -562,7 +563,7 @@ while running:
                             lightning_warning_y = (lightning_y + 720)
                             break
                         else: 
-                            lightning_y = 0
+                            lightning_y = 0 
                             lightning_warning_y = 640
                     lightning_rect.x = lightning_x
                     lightning_rect.y = lightning_y
@@ -629,7 +630,7 @@ while running:
         #print(lightning_time)
         #print(lightning_strike)
         
-        screen.blit(player, (x, y))
+        screen.blit(player_final, (x, y))
         screen.blit(portal, (portal_x, portal_y))
         if worlds[worlds_index] == 2:
             screen.blit(enemy, (ex, ey))
