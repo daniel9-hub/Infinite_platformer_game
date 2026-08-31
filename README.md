@@ -6,7 +6,7 @@ The game is about exploring and trying to get through different worlds. There ar
 # Game modes
 The game features 2 gamemodes:
 - Normal mode - this one is about trying to get through 5 levels to the end.
-- Infninite mode - this one is about freely and infinitely exploring through the worlds.
+- Infninite mode - this one is about freely and infinitely exploring through the worlds and trying to go as far as you can.
 # Worlds
 Here are screenshots of the worlds:
 - World 0
