@@ -1,1 +1,1 @@
-# Infinite_platformer_game
+# Platformer game
