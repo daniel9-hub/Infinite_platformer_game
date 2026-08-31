@@ -30,6 +30,7 @@ for i in range(5):
     worlds.append(world)
 print(worlds)
 worlds_index = 0
+menu_logo = pygame.image.load("menu_logo.png")
 while running:
     while endscreen:
         screen.fill((0,0,0))
@@ -703,6 +704,7 @@ while running:
                 screen.blit(text_normal,(normal_position,500))
                 screen.blit(text_infinite,(infinite_position,500))
                 screen.blit(start_button,(500,320))
+                screen.blit(menu_logo,(0,0))
                 pygame.display.flip()
                 screen.fill((0,0,0))
         elif infinite_position == 550:
@@ -717,6 +719,7 @@ while running:
                 screen.blit(text_normal,(normal_position,500))
                 screen.blit(text_infinite,(infinite_position,500))
                 screen.blit(start_button,(500,320))
+                screen.blit(menu_logo,(0,0))
                 pygame.display.flip()
                 screen.fill((0,0,0))
         elif normal_position == 535:
@@ -726,6 +729,7 @@ while running:
         screen.blit(start_button, (500, 320))
         screen.blit(text_normal, (normal_position,500))
         screen.blit(text_infinite, (infinite_position,500))
+        screen.blit(menu_logo,(0,0))
     print(endless)
     pygame.display.flip()
     
