@@ -22,7 +22,8 @@ Here are screenshots of the worlds:
 Each world has a different unique mechanic or enemy.
 # How to play
 - To select the game mode, use "a" and "d" to switch between them and the one in the middle is the one that gets selected
-- To move, use "a" and "d" and to jump use the spacebar
-
+- To start the game, press "SPACE"
+- To move, use "a" and "d" and to jump use "SPACE"
+- To pause, press "ESCAPE" and to go to the main menu, press it again or to return to the game, press "SPACE"
 
 
