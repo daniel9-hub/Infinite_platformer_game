@@ -19,14 +19,14 @@ portal_x = random.randint(-2500, 2500)
 portal_y = random.randint(200, 300)
 original_portal_x = portal_x
 original_portal_y = portal_y 
-
+paused = font.render("PAUSED",True,(255,255,255))
 level = 1
 endscreen = False
 
 worlds = []
 water = pygame.image.load("water.png")
 for i in range(5):
-    world = random.randint(1,1)
+    world = random.randint(2,2)
     worlds.append(world)
 print(worlds)
 worlds_index = 0
@@ -85,6 +85,8 @@ while running:
     lightning_warning_y = 640
                                                 # ENEMY SETUP
     enemy = pygame.image.load("enemy.png")
+    enemy_left = pygame.transform.flip(enemy,True,False)
+    enemy_final = enemy
     enemy_rect = enemy.get_rect()
     ex = 900
     ey = 100
@@ -386,8 +388,10 @@ while running:
             if worlds[worlds_index] == 2:
                 if ex >= x:
                     enemy_direction = -7
+                    enemy_final = enemy_left
                 elif ex <= x:
                     enemy_direction = 7
+                    enemy_final = enemy
         
         if worlds[worlds_index] == 2:
             ex += enemy_direction
@@ -633,7 +637,7 @@ while running:
         screen.blit(player_final, (x, y))
         screen.blit(portal, (portal_x, portal_y))
         if worlds[worlds_index] == 2:
-            screen.blit(enemy, (ex, ey))
+            screen.blit(enemy_final, (ex, ey))
         if worlds[worlds_index] == 3:
             screen.blit(rush, (rx, ry))
             screen.blit(rush_ready, (rrx, rry))
