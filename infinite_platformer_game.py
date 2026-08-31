@@ -249,14 +249,15 @@ while running:
                         pause = False
                         game_running = False
                         main_menu = True
-                    if pause == False:
+                    elif pause == False:
                         pause = True
                 if event.key == pygame.K_SPACE:
                     pause = False
                     
         if pause == True:
             screen.fill((0,0,0))
-            screen.blit(start_button,(490,320))
+            screen.blit(start_button,(500,320))
+            screen.blit(paused,(590,150))
             pygame.display.flip()
             continue
                                                     # MOVEMENT
