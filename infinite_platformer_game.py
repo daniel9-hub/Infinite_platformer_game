@@ -22,7 +22,7 @@ original_portal_y = portal_y
 paused = font.render("PAUSED",True,(255,255,255))
 level = 1
 endscreen = False
-
+endscreen_image = pygame.image.load("endscreen.png")
 worlds = []
 water = pygame.image.load("water.png")
 for i in range(5):
@@ -33,6 +33,7 @@ worlds_index = 0
 while running:
     while endscreen:
         screen.fill((0,0,0))
+        screen.blit(endscreen_image,(0,0))
         pygame.display.flip()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
