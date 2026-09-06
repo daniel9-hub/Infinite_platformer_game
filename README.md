@@ -25,5 +25,7 @@ Each world has a different unique mechanic or enemy.
 - To start the game, press "SPACE"
 - To move, use "a" and "d" and to jump use "SPACE"
 - To pause, press "ESCAPE" and to go to the main menu, press it again or to return to the game, press "SPACE"
+# Link to play
+https://daniel985.itch.io/platform-explorer
 
 
